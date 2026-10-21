@@ -1,8 +1,6 @@
 # VERIQTA DevOps Training | Linux Day 002: Filesystem Navigation and File Management
 
 **Course:** VERIQTA DevOps Training — From Zero to Professional  
-**Publisher and copyright owner:** VERIQTA LIMITED  
-**Copyright:** © 2026 VERIQTA LIMITED. All rights reserved.  
 **Module:** 01, Linux  
 **Environment:** Ubuntu 26.04 LTS on a training AWS EC2 instance  
 **Session:** Approximately 60 minutes, extend as needed  
@@ -11,7 +9,6 @@
 
 This is a public follow-along lesson. Commands are intended for a **personal training environment**, not an arbitrary production server. You can complete it without AWS by using a local Linux machine and adjusting the home path. Do not commit passwords, keys, or sensitive terminal screenshots.
 
-See [copyright and permitted use](COPYRIGHT.md) for the publisher notice.
 
 ## What you will learn
 
