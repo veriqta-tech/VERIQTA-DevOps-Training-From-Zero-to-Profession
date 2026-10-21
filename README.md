@@ -1,1 +1,0 @@
-# DevOps-Training-From-Zero-to-Profession
