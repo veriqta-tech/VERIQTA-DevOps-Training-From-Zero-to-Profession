@@ -21,9 +21,3 @@ D. They are interchangeable commands.
 
 **Suggested answers:** (1) current working directory; (2) effective username; (3) the package may be absent; (4) it truncates/replaces the existing file contents before writing new output.
 
-## Original learner result
-
-The original learner answered **A**, and the instructor confirmed it was correct. The additional questions above are optional extensions for future readers; they were not part of the recorded Day 001 quiz.
-
----
-© 2026 VERIQTA LIMITED · VERIQTA DevOps Training — From Zero to Professional · All rights reserved.
