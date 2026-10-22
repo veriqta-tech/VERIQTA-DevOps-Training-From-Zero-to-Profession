@@ -1,44 +1,44 @@
 # VERIQTA DevOps Training — From Zero to Professional
+## Module 01: Linux | Day 001 — Your Linux Environment and First Commands
 
-## Linux Day 001: Your Linux Environment and First Commands
+Welcome to your first Linux class. This is a **follow-along lesson**, not a summary of someone else's class. You will read the explanation, run the command, inspect the result, and complete the verification checkpoint before moving on.
 
-**Module:** 01 — Linux Fundamentals  
-**Level:** Absolute beginner  
-**Learning format:** Guided explanation → hands-on command → expected output → verification → independent practice → assessment  
-**Recommended time:** 60–90 minutes for the lesson; allow extra time to provision a server.
+**Who this is for:** Absolute beginners. No prior Linux or cloud knowledge is assumed.
 
-Welcome to Day 001. You will work directly in a Linux terminal and build the workspace that you will use throughout the Linux module. You do not need previous command-line experience.
+**Lab environment:** An Ubuntu Linux machine with a terminal. The walkthrough uses an Ubuntu EC2 instance accessed over SSH, but a local Ubuntu VM works too. Commands are run as an ordinary user unless a specific package-installation step uses `sudo`.
 
-### What you will be able to do
+**What you will build:** A reusable training workspace containing a Linux module, a lesson note, and a practical report.
 
-By the end, you should be able to explain what Linux, a terminal, and a shell are; connect to a Linux machine; identify its OS, user, hostname, and current directory; inspect the filesystem safely; create directories and files; read and verify file contents; and diagnose a missing utility.
+**Learning rhythm:** Understand → Demonstrate → Run → Observe → Verify → Explain → Continue.
 
-### Choose your lab environment
+### Follow the class in order
 
-You can use Ubuntu on your own computer, a virtual machine, or an Ubuntu AWS EC2 instance. Examples use Ubuntu 26.04 LTS and the username `ubuntu`; your system may differ. **You do not need AWS to complete this lesson.** Cloud instances can cost money. Keep SSH private keys private and never publish secrets or public IP addresses in your repository.
+1. [Complete instructor notes — the full lesson, in teaching order](notes/complete-lesson.md)
+2. [Follow-along terminal lab — each command and checkpoint](labs/follow-along-lab.md)
+3. [Practice exercises](exercises/exercises.md)
+4. [Guided mini-project](project/README.md)
+5. [Practical Assessment for Students](assessments/practical-assessment.md)
+6. [Knowledge Check](assessments/knowledge-check.md)
+7. [Troubleshooting and recovery](troubleshooting/README.md)
 
-### Follow this learning path
+The **notes are the class**: they contain the explanations and demonstrations. The **lab is your hands-on companion**: it repeats the commands in sequence, with expected outputs and checkpoints. You can keep both open side by side.
 
-1. [Complete teaching notes](notes/complete-lesson.md) — read the explanations and follow the visual demonstrations.
-2. [Guided terminal lab](labs/follow-along-lab.md) — type each command and confirm its output.
-3. [Practice exercises](exercises/exercises.md) — reinforce each concept.
-4. [Mini-project](project/README.md) — create a simple operations workspace.
-5. [Practical assessment](assessments/practical-assessment.md) — work independently and verify your result.
-6. [Knowledge check](assessments/knowledge-check.md) — test your understanding before Day 002.
-7. [Troubleshooting guide](troubleshooting/README.md) — recover when something goes wrong.
+### Outcomes
 
-All diagrams are in [`images/`](images/), with links placed beside the relevant teaching steps.
+After the lesson you should be able to:
+- Explain Linux, Ubuntu, the terminal, the shell, and SSH in plain language.
+- Recognize your prompt and know what *not* to type.
+- Identify your OS, current user, hostname, and current working directory.
+- Explain the root directory `/` and key Linux folders.
+- Create a predictable training directory structure.
+- Create, write, read, rename, and verify your own practice files.
+- Diagnose and recover when `tree` is not installed.
+- Complete an independent assessment without copying the guided solution.
 
-### Completion checklist
+### Safety and repeatability
 
-- [ ] You can identify your Linux version, username, hostname, and working directory.
-- [ ] You can explain the purpose of `/`, `/home`, `/etc`, and `/var`.
-- [ ] You have created `~/devops-training/01-linux/notes` and `practice`.
-- [ ] You have created and read `notes/day-001.md`.
-- [ ] You can display the directory structure with `tree` (or `find` as an alternative).
-- [ ] You have completed the independent practical assessment.
-- [ ] You have answered the knowledge check and reviewed the explanations.
+Do not paste private SSH keys, passwords, cloud credentials, or identifying server details into a public repository. Commands that write files should be run **only inside your own practice workspace**. If a folder already exists, inspect it rather than deleting it. The `>` operator overwrites its target; always check the destination first.
 
-**Next lesson:** Day 002 — Filesystem Navigation and File Management.
+**Next:** Day 002 — Filesystem Navigation and File Management.
 
-**Brand:** VERIQTA DevOps Training. Repository-level copyright and licensing information is maintained at the repository root.
+**Branding:** VERIQTA DevOps Training. Copyright and licensing are maintained once at the repository root, not inside this daily folder.

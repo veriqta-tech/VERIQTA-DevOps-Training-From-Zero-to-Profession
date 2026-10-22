@@ -1,20 +1,76 @@
-# Practical Assessment — Linux Day 003 (100 Points)
-Complete independently on an Ubuntu lab host. Use only your Day 003 workspace. Refer to the [project brief](../project/README.md) for the required directory structure and file contents.
+# Day 003 — Practical Assessment for Students
+## Secure a VERIQTA application · 100 points
 
-| Criterion | Points | Evidence |
-|---|---:|---|
-| Create `config/` and `scripts/` in `project/veriqta-app/` | 20 | `tree project` |
-| Create `production.conf` with exactly `APP_NAME=VERIQTA` | 20 | `cat` output |
-| Secure config to mode `640` and confirm owner/group | 20 | `stat` output |
-| Create a valid Bash `deploy.sh` and add owner execute permission | 20 | `cat`, `ls -l` |
-| Verify structure, contents, modes, and successful script execution | 20 | Command output, exit status |
-| **Total** | **100** | |
+**Work independently** on your own Ubuntu practice server. The instructor reference solution is available only for review after you attempt the tasks.
 
-## Submission
-Provide commands and terminal outputs or readable screenshots showing each criterion. If you make a mistake, correct it and explain the fix. A typo corrected before final submission is part of the learning process.
+### Scenario
 
-## Marking guidance
-Award full points when requirements are met and evidence is clear. Award partial credit for a correct approach with an incomplete or unverified result. Do not award points solely for typed commands without evidence of their effect. Treat equivalent safe commands as valid. Never require broad privileges or insecure modes such as `777`.
+You are preparing a small application for deployment. Its configuration must be protected, and its deployment script must be executable by its owner. Build and verify the deliverables under `~/devops-training/01-linux/day-003/project/veriqta-app`.
 
-## Reflection questions
-Why does `chmod 640` require a trusted group? What is the difference between file and directory execute permission? Why is `chmod u+x` often preferable to setting a broad numeric mode? What does `stat` verify that `cat` does not?
+### Required deliverables
+
+```text
+project/veriqta-app/
+├── config/
+│   └── production.conf
+└── scripts/
+    └── deploy.sh
+```
+
+`production.conf` must contain `APP_NAME=VERIQTA`, have mode `640`, and be owned by the correct authorized user/group (`ubuntu:ubuntu` on the standard lab host).
+
+`deploy.sh` must contain:
+
+```bash
+#!/bin/bash
+echo "VERIQTA deployment ready"
+```
+
+Its numeric mode must be **744**, and direct execution must print `VERIQTA deployment ready`.
+
+### Five practical tasks
+
+1. **Directory layout — 20 points:** Create `config/` and `scripts/` under the correct project directory.
+2. **Configuration content — 20 points:** Create `production.conf` containing exactly `APP_NAME=VERIQTA`.
+3. **Configuration security — 20 points:** Set mode `640` and verify the owner and group.
+4. **Deployment script — 20 points:** Create the exact two-line Bash script and set mode `744`.
+5. **Complete verification — 20 points:** Show structure, contents, permissions, ownership, and successful script execution.
+
+### Required verification
+
+From `~/devops-training/01-linux/day-003`:
+
+```bash
+pwd
+tree project
+cat project/veriqta-app/config/production.conf
+stat -c 'Owner: %U | Group: %G | Permissions: %a' project/veriqta-app/config/production.conf
+cat project/veriqta-app/scripts/deploy.sh
+stat -c 'Owner: %U | Group: %G | Permissions: %a' project/veriqta-app/scripts/deploy.sh
+./project/veriqta-app/scripts/deploy.sh
+```
+
+### Marking rubric
+
+| Requirement | Points |
+|---|---:|
+| Correct directory structure | 20 |
+| Correct configuration contents | 20 |
+| Configuration mode and ownership | 20 |
+| Correct script contents and mode | 20 |
+| Evidence of successful verification and execution | 20 |
+| **Total** | **100** |
+
+**Suggested pass threshold:** 80/100, with both files present and no unsafe permissions such as `777`. Give partial credit for correctly completed requirements, not merely for commands typed without evidence.
+
+### Reflection
+
+- Why is `640` only appropriate when the owning group is trusted?
+- What is the difference between `x` on a file and `x` on a directory?
+- Why might `chmod u+x` be preferable to setting a broad mode?
+- What does `stat` verify that `cat` cannot?
+- Why should you inspect a script before executing it?
+
+### When something goes wrong
+
+A typo like `ls-l` is a command-name error, not a permissions error. Correct it to `ls -l`. Fix only the failed item, then rerun the verification commands. See [troubleshooting](../troubleshooting/README.md).

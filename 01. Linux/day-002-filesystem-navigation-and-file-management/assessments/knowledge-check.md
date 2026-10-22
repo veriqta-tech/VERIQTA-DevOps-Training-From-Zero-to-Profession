@@ -1,93 +1,76 @@
 # Day 002 — Knowledge Check
 
-Answer these questions **before** opening the answer key below. Explain your reasoning, not just the letter. Each question is worth one point.
+These are the **three questions from the Day 002 class**, in the same order. Answer one at a time, then check the explanations after you finish.
 
-### Question 1 — Back up a configuration
+## Question 1 of 3 — Creating a backup
 
-You must create a backup of `app.conf` without removing the original. Which command is most appropriate?
+You are working on a production Linux server. You need to create a backup of `app.conf` before modifying the original file. Which command is most appropriate?
 
 A. `mv app.conf app.conf.backup`  
 B. `cp app.conf app.conf.backup`  
 C. `rm app.conf`  
 D. `mkdir app.conf.backup`
 
-### Question 2 — Navigate to the parent directory
+**Choose one answer before continuing.**
 
-You are in `/home/ubuntu/devops-training/01-linux/day-002`. Which command takes you to `/home/ubuntu/devops-training/01-linux`?
+## Question 2 of 3 — Moving to the parent directory
+
+You are working inside this directory:
+
+```text
+/home/ubuntu/devops-training/01-linux/day-002
+```
+
+You want to move up one directory to:
+
+```text
+/home/ubuntu/devops-training/01-linux
+```
+
+Which command should you use?
 
 A. `cd /`  
 B. `cd ..`  
 C. `cd ~`  
 D. `pwd`
 
-### Question 3 — Confirm before deleting
+**Choose one answer before continuing.**
 
-You need to remove the temporary file `test.log`, but want Linux to ask for confirmation. Which command should you use?
+## Question 3 of 3 — Confirming before deletion
+
+Imagine you are a DevOps engineer working on a Linux server. You have a temporary file named `test.log` that you no longer need. You want to delete it, but you want Linux to ask for confirmation before removing it.
+
+Which command should you use?
 
 A. `rm test.log`  
 B. `mv test.log`  
 C. `rm -i test.log`  
 D. `cp test.log`
 
-### Question 4 — Show hidden entries
-
-Which command displays entries whose names begin with a dot?
-
-A. `ls -a`  
-B. `pwd`  
-C. `cd -`  
-D. `mkdir`
-
-### Question 5 — Create missing parent directories
-
-Which command creates `review/input` even if `review` does not exist?
-
-A. `ls review/input`  
-B. `mkdir -p review/input`  
-C. `rm review/input`  
-D. `cat review/input`
-
-### Question 6 — Relative paths
-
-What does `..` mean in a relative filesystem path?
-
-A. Filesystem root  
-B. Home directory  
-C. Parent directory  
-D. Hidden file
-
-### Question 7 — Moving a file
-
-After `mv -i labs/lesson.txt exercises/` succeeds, where is the moved file?
-
-A. Only in `labs`  
-B. In both directories  
-C. In `exercises`, not `labs`  
-D. Deleted everywhere
-
-### Question 8 — Safe verification
-
-After copying a configuration file, what is the strongest verification among these choices?
-
-A. Assume the command worked because no error appeared  
-B. Run `cat` on the source and destination and compare their content  
-C. Delete the source  
-D. Rename the parent directory
+**Choose one answer before reading the explanations.**
 
 ---
 
-<details>
-<summary>Answer key and explanations — open after answering</summary>
+## Answer key and instructor explanations
 
-1. **B.** `cp` duplicates the file while preserving the original. `mv` would relocate or rename it.
-2. **B.** `cd ..` enters the parent directory. `/` is root and `~` is home.
-3. **C.** `rm -i` prompts before removal. Confirm the exact filename before answering.
-4. **A.** `ls -a` includes dot-prefixed names such as `.` and `..`.
-5. **B.** `mkdir -p` creates missing parent directories.
-6. **C.** `..` refers to the parent directory; `.` refers to the current directory.
-7. **C.** A successful `mv` relocates the source to the target directory; `-i` prompts if overwriting would occur.
-8. **B.** Checking the actual contents verifies the intended outcome rather than relying only on a command's exit behavior.
+### Question 1 — B. `cp app.conf app.conf.backup`
 
-**Score guide:** 8/8: ready for the next lesson; 6–7: review any missed topics; 0–5: repeat the guided lab and retake the check. These are study recommendations, not automatic certifications.
+`cp` creates a second file while leaving `app.conf` in place. After the command, both `app.conf` and `app.conf.backup` exist. `mv` would rename or move the original rather than preserve a second copy. `rm` deletes; `mkdir` creates a directory.
 
-</details>
+**Engineering lesson:** Before changing a configuration file, preserve the original and verify the backup. A same-disk copy is useful but does not replace a complete backup strategy.
+
+### Question 2 — B. `cd ..`
+
+`..` means the parent directory. `cd ..` moves one level up from `day-002` to `01-linux`. `cd /` goes to the filesystem root, `cd ~` goes to your home directory, and `pwd` displays your current directory without changing it.
+
+**Engineering lesson:** Always know your current working directory before running commands that modify files.
+
+### Question 3 — C. `rm -i test.log`
+
+`rm -i` asks for confirmation before removing the named file. Plain `rm` normally removes it without that interactive confirmation. `mv` moves or renames; `cp` copies.
+
+**Engineering lesson:** Interactive confirmation is helpful but not infallible. Check the full target path, and do not experiment with recursive deletion on important directories.
+
+### Knowledge-check completion
+
+**Score:** 1 point per correct answer, 3 points total. If you missed a question, repeat its associated lab stage and explain the command in your own words before moving to Day 003.

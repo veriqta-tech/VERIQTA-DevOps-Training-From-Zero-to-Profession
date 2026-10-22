@@ -1,31 +1,134 @@
-# Troubleshooting — Linux Day 003
+# Day 003 — Troubleshooting and Recovery
+
+A reliable engineer does not respond to every failure with `sudo` or `chmod 777`. Read the error, identify which requirement failed, correct the smallest thing, and verify.
 
 ## `ls-l: command not found`
-Cause: Missing space. `ls-l` is interpreted as a single command name. **Fix:** `ls -l filename`.
+
+**Cause:** Missing space. The shell searches for a program named `ls-l`.
+
+**Fix:**
+
+```bash
+ls -l
+```
+
+This exact typo is worth understanding: shell commands are sensitive to spaces.
 
 ## `Permission denied` when running `./hello.sh`
-Inspect `ls -l hello.sh` and `cat hello.sh`. Confirm owner `x` with `chmod u+x hello.sh`; confirm a valid `#!/bin/bash` shebang. Also verify the parent directory can be traversed. A `noexec` filesystem mount can prevent direct execution even when mode bits allow it.
 
-## `Permission denied` when reading a file
-Check `ls -l file`, `id`, and parent directory traversal permissions. Do not reflexively use `sudo` or `chmod 777`. Determine which identity needs access.
+**Possible causes:** Missing execute permission, inaccessible parent directory, or a filesystem mounted with execution restrictions.
+
+**Inspect first:**
+
+```bash
+pwd
+ls -l hello.sh
+cat hello.sh
+```
+
+**For the practice script only:**
+
+```bash
+chmod u+x hello.sh
+ls -l hello.sh
+./hello.sh
+```
+
+If it still fails, check the interpreter path and the filesystem restrictions. Do not set `777`.
 
 ## `No such file or directory`
-Use `pwd`, `ls`, and `ls -l path` to verify current location, spelling, and case. Linux paths are case-sensitive. For scripts, also inspect the shebang and line endings if the file visibly exists.
 
-## `stat` does not show `640`
-Re-run `chmod 640 app.conf` on the intended lab file, then `stat -c '%a %n' app.conf`. Ensure you did not accidentally change a similarly named file in another directory.
+**Possible causes:** Wrong working directory, misspelled path, missing file, or a shebang referencing a missing interpreter.
 
-## `Operation not permitted` from `chgrp` or `chown`
-Changing user ownership generally requires privilege; changing group ownership is constrained by ownership and group membership. Confirm the correct user and group with `id` and `ls -l`. For the standard lab, do not invent additional accounts. Avoid escalating privilege unless necessary and justified.
+```bash
+pwd
+ls
+cat hello.sh
+```
 
-## Script output includes quotation marks
-If you accidentally wrote `echo '"VERIQTA deployment ready"'` with literal backslashes, inspect with `cat deploy.sh`. Replace the line with `echo "VERIQTA deployment ready"` (without extra escaped quotes in the actual script). Test again.
+Return to the correct practice directory before retrying.
 
-## `tree: command not found`
-Use `find project -print` as an alternative. If your lab allows package installation, `sudo apt update && sudo apt install tree` can install it; do not install software on a restricted production host without authorization.
+## `chmod: cannot access 'app.conf'`
 
-## File mode changes but contents disappear
-`chmod` does not erase contents. Investigate prior redirection commands: `>` overwrites; `>>` appends. Recover from a known backup or recreate the lab file.
+The file may not exist in your current directory.
 
-## Safety reminders
-Do not run `chmod -R 777`, `sudo chown -R` on system paths, or arbitrary internet scripts. The sample configuration is deliberately non-sensitive.
+```bash
+pwd
+ls -l
+```
+
+Confirm you are in `day-003/permissions-lab`. Do not create a duplicate file elsewhere by guessing.
+
+## `chgrp: invalid group` or `chown: invalid user`
+
+The account or group name may not exist on your machine. Inspect:
+
+```bash
+whoami
+id
+groups
+```
+
+Use the actual authorized user and group for your practice file. Do not create system accounts just to complete this exercise.
+
+## `Operation not permitted` during `chgrp` or `chown`
+
+Ownership changes have authorization rules. An ordinary user cannot arbitrarily change a file's owner. The guided `sudo chown` step is limited to the known practice file and should only be run if you are authorized.
+
+**Do not** recursively change ownership of your home directory or system folders.
+
+## Permission string differs before `chmod`
+
+This can be normal because new-file permissions depend on umask. The final explicit `chmod 640` is what matters for `app.conf`.
+
+**Verify:**
+
+```bash
+stat -c '%a' app.conf
+```
+
+Expected after setting the mode: `640`.
+
+## File contents changed unexpectedly
+
+`>` overwrites; `>>` appends. Inspect your practice script:
+
+```bash
+cat hello.sh
+```
+
+If the shebang is missing, recreate the two-line practice script using the commands from Lab 6, then verify before executing it.
+
+## `./hello.sh` differs from `bash hello.sh`
+
+`bash hello.sh` explicitly asks Bash to interpret the file. `./hello.sh` requests direct execution and generally requires execute permission. This lesson intentionally uses direct execution to practice `chmod u+x`.
+
+## `stat` shows mode `744` but the script still will not execute
+
+Check its shebang and whether parent directories are traversable. The filesystem may have `noexec` restrictions. Do not weaken unrelated permissions; investigate the exact error.
+
+## Project structure is wrong
+
+From `day-003`, run:
+
+```bash
+pwd
+tree project
+```
+
+Check for singular `project`, exact `veriqta-app`, and `config`/`scripts`. Do not delete the entire project to fix one misspelled directory.
+
+## Final verification checklist
+
+From `~/devops-training/01-linux/day-003`:
+
+```bash
+tree project
+cat project/veriqta-app/config/production.conf
+stat -c 'Owner: %U | Group: %G | Permissions: %a' project/veriqta-app/config/production.conf
+cat project/veriqta-app/scripts/deploy.sh
+stat -c 'Owner: %U | Group: %G | Permissions: %a' project/veriqta-app/scripts/deploy.sh
+./project/veriqta-app/scripts/deploy.sh
+```
+
+**Required:** Correct paths; configuration `APP_NAME=VERIQTA` and mode `640`; script mode `744` and output `VERIQTA deployment ready`. Each command proves a different part of the result.

@@ -1,45 +1,90 @@
 # Day 001 — Knowledge Check
 
-Answer these questions **before** opening the answer key. Write your answers in your own notes.
+Answer each question **before** reading the answer key. These questions reinforce the commands you used in the class.
 
-**1. What is the difference between `mkdir` and `touch`?**  
+### Question 1
+
+What is the difference between `mkdir` and `touch`?
+
 A. `mkdir` creates directories; `touch` can create empty files.  
 B. Both commands delete files.  
 C. `mkdir` displays files; `touch` changes directories.  
 D. They are identical.
 
-**2. Which command shows your current working directory?**  
-A. `hostname`  B. `pwd`  C. `whoami`  D. `cat`
+### Question 2
 
-**3. What does `whoami` print?**  
-A. The Linux version  B. The computer hostname  C. The current effective username  D. The current directory
+Which command shows your current working directory?
 
-**4. What is the purpose of `cat notes/day-001.md`?**  
-A. Delete the file  B. Display the file contents  C. Rename the file  D. Create a directory
+A. `hostname`  
+B. `pwd`  
+C. `whoami`  
+D. `cat`
 
-**5. What does `>` do in `echo "hello" > file.txt`?**  
-A. Append without changing existing text  B. Rename the file  C. Replace the file contents with the command's output  D. Print the current directory
+### Question 3
 
-**6. What should you do if `tree` reports `command not found` on Ubuntu?**  
-A. Delete the workspace  B. Investigate and install `tree` if needed  C. Run everything as root  D. Reinstall Linux
+What does `whoami` display?
 
-**7. What does `/` mean when used as a Linux path?**  
-A. The current user's home directory  B. The filesystem root  C. A text file  D. The hostname
+A. The Linux version  
+B. The hostname  
+C. The current effective username  
+D. The current directory
 
-**8. Why do we verify the report with `cat` after writing it?**  
-A. To confirm the exact contents  B. To install a package  C. To connect to SSH  D. To change its owner
+### Question 4
+
+What does `cat notes/day-001.md` do?
+
+A. Deletes the file  
+B. Displays the file contents  
+C. Renames the file  
+D. Creates a directory
+
+### Question 5
+
+What does `>` do in `echo "hello" > file.txt`?
+
+A. Appends without changing existing text  
+B. Renames the file  
+C. Redirects output to the file, replacing its existing contents  
+D. Prints the current directory
+
+### Question 6
+
+You run `tree` and see `command not found`. What is the best next action?
+
+A. Delete the training workspace  
+B. Investigate whether `tree` is installed, and install it if appropriate  
+C. Run every future command as root  
+D. Reinstall Linux
+
+### Question 7
+
+What does `/` represent in a Linux path?
+
+A. Your home directory  
+B. The filesystem root  
+C. A text file  
+D. Your hostname
+
+### Question 8
+
+Why run `cat` after writing your practice report?
+
+A. To confirm the exact file contents  
+B. To install a package  
+C. To connect through SSH  
+D. To change file ownership
 
 ---
 
-## Answer key and explanations
+## Answer key — read after attempting the questions
 
-1. **A** — `mkdir` creates directories; `touch` creates a missing file or updates timestamps.
-2. **B** — `pwd` prints the current working directory.
-3. **C** — `whoami` reports the effective username.
-4. **B** — `cat` prints file contents to the terminal.
-5. **C** — `>` overwrites the destination file; use it carefully.
-6. **B** — Diagnose the error, then use `sudo apt update` and `sudo apt install tree` if appropriate. `find` can be used without `tree`.
-7. **B** — `/` is the filesystem root, not the root user's home directory (`/root`).
-8. **A** — Verification catches typos and unintended file contents.
+1. **A.** `mkdir` creates directories. `touch` creates a missing empty file or updates timestamps on an existing file.
+2. **B.** `pwd` means *print working directory*. `cd` changes the directory; it does not print it by itself.
+3. **C.** `whoami` identifies the effective user running the command.
+4. **B.** `cat` prints the contents of the specified file. It does not rename or delete it.
+5. **C.** `>` overwrites the destination file's contents. This is useful in a controlled lab but risky on important files.
+6. **B.** Diagnose the error. On Ubuntu, `sudo apt update` followed by `sudo apt install tree` may be appropriate; `find` is another option.
+7. **B.** `/` is the top of the filesystem. It is not the same as `/root`.
+8. **A.** Verification catches misspellings, wrong destinations, and incorrect contents.
 
-**Self-check:** Aim for 8/8. For any missed question, return to the relevant teaching step and repeat the command on your own machine.
+**Self-assessment:** Review any question you missed, return to the corresponding teaching stage, and repeat the command until you can explain both what it does and why you use it.

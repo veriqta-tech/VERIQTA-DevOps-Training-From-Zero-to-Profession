@@ -1,49 +1,153 @@
-# Day 002 — Troubleshooting Guide
+# Day 002 — Troubleshooting and Safe Recovery
 
-When a command fails, first check **where you are** with `pwd`, **what exists** with `ls`, and **how the target is spelled**. Read the full error before trying another command.
+DevOps engineers do not assume a command succeeded. They inspect the output, identify the exact failed operation, correct the smallest issue, and verify again.
 
-## `cd: ... No such file or directory`
+## 1. `cd: ... No such file or directory`
 
-**Cause:** Wrong current directory, typo, or missing target. **Check:** `pwd`, `ls`, and `ls ~/devops-training`. **Fix:** Use an absolute home-based path such as `cd ~/devops-training/01-linux`. Create the training workspace with `mkdir -p ~/devops-training/01-linux` if necessary.
-
-## `cp: cannot stat 'notes/lesson.txt'`
-
-**Cause:** The source path is wrong or the file was never created. **Check:** `pwd; ls notes; cat notes/lesson.txt`. **Fix:** Return to `~/devops-training/01-linux/day-002`, then recreate the intended practice file if needed.
-
-## `mkdir: ... File exists`
-
-**Cause:** A directory already exists or a regular file blocks the requested directory name. **Check:** `ls -ld NAME`. **Fix:** Use `mkdir -p` for directories that may already exist. Do not delete a blocking file until you understand what it contains.
-
-## `tree: command not found`
-
-**Cause:** The optional `tree` package is missing. **Fix:** Use `find day-002 -print | sort` immediately, or install `tree` on Ubuntu using `sudo apt update` followed by `sudo apt install tree` if your training environment permits it.
-
-## `mv` or `cp` overwrote something unexpectedly
-
-**Cause:** The destination already existed. **Prevention:** Inspect `ls -l DESTINATION` before the operation and use `cp -i` or `mv -i` where appropriate. Note that `-i` prompts **only when an overwrite is at issue**, not every time. In real operations, prefer version control and verified backups.
-
-## `rm -i` does not ask a question
-
-**Cause:** The file may not exist, or the shell may be executing a different command than expected. **Check:** `pwd`, `ls -l exercises/temporary.txt`, and the exact command typed. If the file is absent, no deletion is needed. Never use `rm -f` to silence a confusing error.
-
-## `Permission denied`
-
-**Cause:** The user lacks permission on a directory or file. **Check:** `whoami`, `pwd`, `ls -ld .`, and `ls -l FILE`. **Fix:** Work inside your own home directory. Do not use `sudo` reflexively or weaken system permissions just to make a lab pass.
-
-## `>` erased earlier file content
-
-**Cause:** Shell redirection with `>` truncates an existing file before writing. **Prevention:** Use new disposable filenames in the lab and inspect files before writing. `>>` appends instead of replacing, but should also be used intentionally.
-
-## Wrong project filename or directory
-
-**Cause:** `projects` versus `project`, or `production.conf` versus `app.conf`. **Check:** `tree day-002` and `tree project/application`. **Fix:** Revisit the required names and use `mv -i` to rename your own files carefully.
-
-## Verification checklist
+**Likely cause:** Wrong path, missing directory, or working from a different starting location.
 
 ```bash
 pwd
-ls -la
-find ~/devops-training/01-linux/day-002 -maxdepth 3 -print | sort
+ls ~/devops-training
+ls ~/devops-training/01-linux
 ```
 
-Inspect output; do not delete or recursively modify paths to hide an error. If a file's content differs, use `cat` on the source and destination and retrace the last copy or move operation.
+**Recovery:** Navigate using the full intended path. Create only missing **training** directories if appropriate.
+
+## 2. `mkdir: ... File exists`
+
+**Likely cause:** The target directory already exists.
+
+**Recovery:** Inspect with `ls -ld` and continue if it is the intended directory. `mkdir -p` is repeatable for directories. Do not delete existing work just to rerun the lab.
+
+## 3. `tree: command not found`
+
+`tree` may not be installed.
+
+```bash
+command -v tree
+```
+
+If authorized on Ubuntu, you can install it:
+
+```bash
+sudo apt update
+sudo apt install tree
+```
+
+Or inspect without installation:
+
+```bash
+find day-002 -maxdepth 3 -print
+```
+
+## 4. `cp: cannot stat 'notes/lesson.txt'`
+
+**Likely cause:** The source file is missing or you are in the wrong directory.
+
+```bash
+pwd
+ls notes
+cat notes/lesson.txt
+```
+
+**Recovery:** Return to `day-002`, create the source file if missing, and retry the copy.
+
+## 5. `cp: ... Not a directory`
+
+**Likely cause:** The destination folder does not exist or is actually a file.
+
+```bash
+ls -ld labs
+```
+
+**Recovery:** Confirm you created the correct `labs` directory in Step 3.
+
+## 6. `mv -i` did not ask for confirmation
+
+This is usually expected when the destination does **not** already exist. `-i` is designed to prompt before an overwrite, not necessarily before every move.
+
+**Verify:** Check source and destination listings, then read the moved file.
+
+## 7. The file disappeared from `labs`
+
+After `mv -i labs/lesson.txt exercises/`, the source path is expected to disappear. This is the difference between moving and copying.
+
+```bash
+ls labs
+ls exercises
+cat notes/lesson.txt
+```
+
+**Verify:** The original `notes/lesson.txt` still exists.
+
+## 8. `rm -i` asks for confirmation
+
+Read the exact target path before typing `y`. If it is not the intended temporary practice file, answer `n` and inspect the directory.
+
+**Never** use recursive removal just to “clean up” a lab.
+
+## 9. The copied file has the wrong contents
+
+```bash
+cat notes/lesson.txt
+cat exercises/file-management-practice.txt
+```
+
+If one is wrong, identify where the mistake was introduced. Do not overwrite the original without inspecting it first.
+
+## 10. Project has `projects` instead of `project`
+
+The expected workspace is `day-002/project` (**singular**). Check the structure:
+
+```bash
+cd ~/devops-training/01-linux/day-002
+tree
+```
+
+If you created the wrong folder, do not delete it blindly. Inspect its contents, move only intended practice files to the correct folder, and verify.
+
+## 11. Deployment copy is named `app.conf` instead of `production.conf`
+
+The required deployment path is:
+
+```text
+application/deployment/production.conf
+```
+
+From `day-002/project`, you can create the correct copy from the original:
+
+```bash
+cp application/config/app.conf application/deployment/production.conf
+cat application/deployment/production.conf
+```
+
+Check any unintended extra file before deciding what to do with it.
+
+## 12. `Permission denied`
+
+Check your identity, current directory, and target permissions:
+
+```bash
+whoami
+pwd
+ls -ld .
+```
+
+Stay within your own training workspace. Do not run every command with `sudo` or change system directory permissions.
+
+## Final recovery checkpoint
+
+From `~/devops-training/01-linux/day-002/project`:
+
+```bash
+pwd
+tree application
+cat application/config/app.conf
+cat application/backup/app.conf
+cat application/deployment/production.conf
+```
+
+**Expected:** The correct project path, the required three files, and `APP_NAME=DevOpsTraining` printed three times.
+
+If all checks pass, return to the [Practical Assessment for Students](../assessments/practical-assessment.md) and [Knowledge Check](../assessments/knowledge-check.md).

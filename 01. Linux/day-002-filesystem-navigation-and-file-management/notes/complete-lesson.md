@@ -1,110 +1,235 @@
-# Day 002 — Complete Teaching Lesson
+# Day 002 — Complete Instructor Notes
+## Filesystem Navigation and File Management
 
-This is a **follow-along class**. Read one section, type its commands, compare the output, and complete the checkpoint before proceeding. Output examples illustrate what you should look for; dates, usernames, and directory listings may differ. Do not paste a terminal prompt such as `ubuntu@server:~$` as part of a command.
+Today we are going to work the way a DevOps engineer works when organizing deployment files, application configuration, scripts, and backups. You will **not** memorize commands without context. Every stage has a purpose, commands to run, expected behavior, and a verification checkpoint. Complete one stage before the next.
 
-## Before you begin: know your working location
+### Before we begin: Why paths matter
 
-A Linux filesystem is a hierarchy of directories. A **directory** holds entries such as files and other directories. A **path** tells Linux where to find an entry. Your **working directory** is where relative commands start.
+When you run a command such as `cp config.conf backup/`, Linux needs to know *where* to find the source and *where* to place the copy. Those locations are called **paths**. A command can be syntactically correct and still change the **wrong** file if you are in the wrong directory. That is why we repeatedly use `pwd`, `ls`, and `cat` to verify our work.
+
+The examples use `ubuntu` as the Linux username. Your actual hostname, timestamps, and directory listing details may differ. Do not copy the `$` prompt shown in illustrative terminal examples.
+
+---
+
+## Step 1 of 7 — Absolute paths, relative paths, and changing directories
+
+### What is a path?
+
+A **path** identifies a location in the filesystem. There are two common forms:
+
+- An **absolute path** starts at `/`, the filesystem root. Example: `/home/ubuntu/devops-training/01-linux`.
+- A **relative path** is interpreted from your current working directory. Example: `01-linux` when you are in `~/devops-training`.
+
+These symbols are essential:
+
+| Symbol or command | Meaning |
+|---|---|
+| `/` | The top of the filesystem; also separates path components |
+| `~` | Your current user's home directory |
+| `.` | The current directory |
+| `..` | The parent directory, one level up |
+| `cd` | Change directory |
+| `pwd` | Print the absolute path of the current directory |
+| `cd -` | Return to the previous working directory |
+
+### Follow along
+
+**Command 1 — Enter the training workspace using a home-relative path:**
 
 ```bash
-whoami
-pwd
-ls
-```
-
-`whoami` prints your current username. `pwd` means *print working directory*. `ls` lists entries. If you completed Day 001, your workspace should be under your home directory. Create it safely if it is missing:
-
-```bash
-mkdir -p ~/devops-training/01-linux
 cd ~/devops-training
-pwd
 ```
 
-Expected pattern: `/home/ubuntu/devops-training` for the example Ubuntu account. `~` expands to your own home directory, so the commands are portable across usernames.
-
-## Step 1 — Navigate with absolute and relative paths
-
-An **absolute path** starts with `/`, the filesystem root, and does not depend on your current location: `/home/ubuntu/devops-training`. A **relative path** starts from your current working directory: `01-linux`. `/` and `~` are not interchangeable: `/` is the top of the filesystem; `~` is your home directory. `.` refers to the current directory and `..` to its parent.
-
-![Path navigation](../images/01-path-navigation.svg)
-
-From the training workspace:
+**Command 2 — Confirm where you are:**
 
 ```bash
-cd ~/devops-training
-pwd
-cd 01-linux
-pwd
-cd ..
 pwd
 ```
 
-Expected pattern:
+Expected example:
 
 ```text
 /home/ubuntu/devops-training
+```
+
+**Command 3 — Enter the Linux module using a relative path:**
+
+```bash
+cd 01-linux
+```
+
+Why this works: you are currently in `devops-training`, and `01-linux` is a directory immediately beneath it.
+
+**Command 4 — Verify:**
+
+```bash
+pwd
+```
+
+Expected example:
+
+```text
 /home/ubuntu/devops-training/01-linux
+```
+
+**Command 5 — Move up to the parent directory:**
+
+```bash
+cd ..
+```
+
+`..` does not mean “the home directory.” It means **one directory above wherever you are now**.
+
+**Command 6 — Verify:**
+
+```bash
+pwd
+```
+
+Expected example:
+
+```text
 /home/ubuntu/devops-training
 ```
 
-Try the absolute path with your own home expanded automatically:
+**Command 7 — Return to the previous directory:**
 
 ```bash
-cd "$HOME/devops-training/01-linux"
-pwd
 cd -
+```
+
+Expected: the shell switches back to `/home/ubuntu/devops-training/01-linux` and commonly prints that path.
+
+**Command 8 — Confirm the final location:**
+
+```bash
 pwd
 ```
 
-`$HOME` contains your home directory. `cd -` returns to the *previous working directory* and prints its path. Its destination depends on where you were before. `cd` alone or `cd ~` takes you home. `cd /` takes you to the filesystem root. Use `pwd` whenever you are uncertain where you are.
+Expected example:
 
-**Checkpoint 1:** From `~/devops-training`, enter `01-linux`, then return to `~/devops-training` using `cd ..`. Confirm both locations with `pwd`. Explain in your own words why `cd /` would not achieve the same result.
-
-## Step 2 — Inspect entries with `ls`, `ls -l`, and `ls -a`
-
-```bash
-cd ~/devops-training
-ls
-ls -l
-ls -a
+```text
+/home/ubuntu/devops-training/01-linux
 ```
 
-![Compare listing commands](../images/02-ls-comparison.svg)
+### Why a DevOps engineer needs this
 
-`ls` shows non-hidden names, such as `01-linux`. `ls -l` uses the **long format**: entry type and permissions, hard-link count, owner, group, size, modification time, and name. `ls -a` also displays names starting with a dot, including `.` and `..`.
+Imagine you are deploying a service. Running `rm -i config.txt` from the wrong directory could target the wrong file. `pwd` is a simple habit that prevents serious mistakes.
 
-Example long listing (your timestamps and sizes will differ):
+### Verification checkpoint 1
+
+You should have visited the training root, the Linux module, returned to the training root, and returned to the Linux module. **Can you explain the difference between `cd ..` and `cd -`?** The former goes to a parent; the latter switches to the prior working directory.
+
+![Path navigation](../images/01-path-navigation.svg)
+
+---
+
+## Step 2 of 7 — Listing files and interpreting `ls` output
+
+A directory can contain files, other directories, and hidden entries. We need to inspect those entries before changing them.
+
+Stay in:
+
+```text
+/home/ubuntu/devops-training/01-linux
+```
+
+**Command 1:**
+
+```bash
+ls
+```
+
+This lists visible entries. You should see your Day 001 folders and other existing training items, if present.
+
+**Command 2:**
+
+```bash
+ls -l
+```
+
+The `-l` option requests a **long listing**. An illustrative line for `01-linux` when listed from its parent is:
 
 ```text
 drwxrwxr-x 4 ubuntu ubuntu 4096 Oct 21 08:17 01-linux
 ```
 
-Read the fields carefully:
+Do not expect that exact date or size. Let's interpret the fields:
 
-- The first `d` indicates a directory; a regular file typically starts with `-`.
-- `rwxrwxr-x` describes owner, group, and other permission sets. `r` means read, `w` write, and `x` execute/traverse as applicable.
-- `4` is the hard-link count, **not** the number of files inside the directory.
-- The two `ubuntu` fields are owner and group.
-- `4096` is the directory entry's reported size in bytes on this filesystem, **not** the total size of everything beneath it.
-- The date is its modification timestamp; the last field is its name.
+| Field | Meaning |
+|---|---|
+| `d` | Directory (a regular file would begin with `-`) |
+| `rwxrwxr-x` | Permissions for owner, group, and others |
+| `4` | Hard-link count for the directory; **not** the number of files |
+| `ubuntu` | Owning user |
+| `ubuntu` | Owning group |
+| `4096` | Size field for the directory entry; **not** total contents |
+| `Oct 21 08:17` | Displayed modification timestamp |
+| `01-linux` | Directory name |
 
-Hidden dotfiles are not automatically secure or private; `ls -a` merely makes them visible.
+The permission string will be covered more deeply in Day 003. For today, notice the leading `d`, owner, group, and filename.
 
-**Checkpoint 2:** Run all three commands and identify the difference. Point to the directory indicator, owner, and permissions in one `ls -l` row. If your workspace is empty, create the `01-linux` folder using the setup command above.
+**Command 3:**
 
-## Step 3 — Create a structured directory workspace
+```bash
+ls -a
+```
 
-`mkdir` means *make directory*. With `-p`, it creates missing parent directories and does not fail simply because a requested directory already exists. In Bash, `{a,b,c}` expands into multiple words before `mkdir` runs.
+`-a` means **all**: include names that begin with a dot. Two special entries commonly appear:
+
+- `.` means the current directory.
+- `..` means its parent.
+
+Hidden files are not necessarily secret or secure. A name beginning with `.` simply makes it omitted from a normal `ls` listing.
+
+### A useful contrast
+
+- `ls` shows the visible names.
+- `ls -l` shows more metadata.
+- `ls -a` includes hidden entries.
+
+You can combine options, such as `ls -la`, but first understand each option independently.
+
+### Verification checkpoint 2
+
+Run all three commands and compare the output. Identify at least one directory and explain what `.` and `..` represent. If a directory's long-listing line begins with `d`, that tells you its type, not that it is executable.
+
+![Listing modes](../images/02-ls-comparison.svg)
+
+---
+
+## Step 3 of 7 — Creating a structured Day 002 workspace
+
+In real DevOps projects, we do not throw every file into one directory. We separate teaching notes, lab files, exercises, project files, and troubleshooting material.
+
+**Make sure you are in the Linux module:**
 
 ```bash
 cd ~/devops-training/01-linux
+pwd
+```
+
+**Create all five subdirectories in one command:**
+
+```bash
 mkdir -p day-002/{notes,labs,exercises,project,troubleshooting}
+```
+
+Let's explain this carefully.
+
+- `mkdir` creates directories.
+- `-p` creates missing parent directories and tolerates already-existing directories.
+- `day-002/` is the parent path.
+- `{notes,labs,exercises,project,troubleshooting}` is **Bash brace expansion**. Before `mkdir` runs, Bash expands this into five paths.
+- `project` is **singular** in this course's workspace. Do not substitute `projects`.
+
+**Verify the result:**
+
+```bash
 tree day-002
 ```
 
-![Nested directory layout](../images/03-directory-layout.svg)
-
-Expected:
+Expected structure:
 
 ```text
 day-002
@@ -117,90 +242,271 @@ day-002
 6 directories, 0 files
 ```
 
-The count includes the `day-002` parent. **Use `project` singular**. If `tree` is not installed, run `find day-002 -type d | sort` instead; the output formatting differs. You can install `tree` on Ubuntu using `sudo apt update && sudo apt install tree`, if permitted and appropriate for your sandbox.
+The count includes the top-level `day-002` directory. If you have already done some exercises, your tree will also show files; that is fine.
 
-**Checkpoint 3:** Confirm all five subdirectories exist and that you have not accidentally created `projects` instead of `project`.
+**If `tree` is missing**, use `find day-002 -maxdepth 2 -print` or review the installation guidance from Day 001.
 
-## Step 4 — Create, read, and copy a file
+### Why this matters in DevOps
 
-`echo` prints text. The `>` redirection operator writes command output to a file, **overwriting that file if it already exists**. `cat` displays file contents. `cp SOURCE DESTINATION` copies a file while leaving the source in place.
+Clear directory conventions help teammates, automation pipelines, and reviewers find what they need. Inconsistent paths can break scripts even if the file contents are correct.
+
+### Verification checkpoint 3
+
+Confirm that all five subdirectories exist, that `project` is singular, and that you did not accidentally create the workspace outside `01-linux`.
+
+![Workspace structure](../images/03-directory-layout.svg)
+
+---
+
+## Step 4 of 7 — Creating and copying files with `echo`, `cat`, and `cp`
+
+Now we will create a small text file and copy it. Copying is a foundational backup skill: it produces a second file **without removing the original**.
+
+**Enter the workspace:**
 
 ```bash
 cd ~/devops-training/01-linux/day-002
-echo "Learning Linux file management" > notes/lesson.txt
-cat notes/lesson.txt
-cp notes/lesson.txt labs/
-cat labs/lesson.txt
-ls notes
-ls labs
 ```
 
-Expected from both `cat` commands:
+**Create the source file:**
+
+```bash
+echo "Learning Linux file management" > notes/lesson.txt
+```
+
+Break it down:
+- `echo` prints text.
+- Quotation marks keep the phrase together.
+- `>` redirects output into the target file and **overwrites existing contents**. Only use it here on your known training file.
+
+**Read the source:**
+
+```bash
+cat notes/lesson.txt
+```
+
+Expected:
 
 ```text
 Learning Linux file management
 ```
 
-Expected from each `ls`: `lesson.txt`. A destination ending in `/` identifies an existing directory. A missing source file usually means your working directory or spelling is wrong; check `pwd` and `ls notes` before retrying. `cp -i` can request confirmation before overwriting an existing destination; ordinary `cp` may overwrite it.
+**Copy the file into the labs directory:**
+
+```bash
+cp notes/lesson.txt labs/
+```
+
+The source is `notes/lesson.txt`. The destination is the existing directory `labs/`. Because we gave a destination directory, the copied file retains the basename `lesson.txt`.
+
+**Read the copy:**
+
+```bash
+cat labs/lesson.txt
+```
+
+Expected:
+
+```text
+Learning Linux file management
+```
+
+**Verify both directory listings:**
+
+```bash
+ls notes
+ls labs
+```
+
+Both should include `lesson.txt`.
+
+### What actually happened?
+
+Before copying, only `notes/lesson.txt` existed. After copying, both `notes/lesson.txt` and `labs/lesson.txt` exist. The two files can later be edited independently.
+
+In production, engineers may copy configuration files before changing them. However, a local copy is not a complete backup strategy: it does not protect against disk failure or loss of the entire machine.
+
+### Verification checkpoint 4
+
+Can you display **both files** and prove they contain the same sentence? If yes, the copy worked. Do not assume success just because `cp` printed no error.
 
 ![Copy versus move](../images/04-copy-versus-move.svg)
 
-**Checkpoint 4:** Verify `notes/lesson.txt` and `labs/lesson.txt` both exist and have identical content. Explain why copying did not remove the source.
+---
 
-## Step 5 — Move and rename without losing the original
+## Step 5 of 7 — Moving and renaming files safely with `mv -i`
 
-`mv` changes the location or name of a file. `mv -i` requests confirmation **when a move would overwrite an existing destination**, not for every move. The original copy in `notes/` remains because the source of the move is the copied file in `labs/`.
+We now have a copy in `labs`. Let's move that copy to `exercises`, then rename it. **The original file in `notes` must remain untouched.**
 
-```bash
-mv -i labs/lesson.txt exercises/
-ls exercises
-ls labs
-mv -i exercises/lesson.txt exercises/file-management-practice.txt
-cat exercises/file-management-practice.txt
-cat notes/lesson.txt
-```
-
-Expected: `exercises` contains `file-management-practice.txt`; `labs` no longer contains `lesson.txt`; both displayed files contain `Learning Linux file management`. A rename within one filesystem typically changes directory entries without duplicating the data; moving between filesystems may require copying and removing the source.
-
-**Checkpoint 5:** Explain the difference between copying, moving, and renaming. Verify that the file under `notes/` was preserved.
-
-## Step 6 — Remove a temporary file safely
-
-Deleting files can be irreversible. Restrict this exercise to the disposable file you create here. `rm -i` prompts before removal; respond `y` only after checking the exact target.
+**Make sure you are inside `day-002`:**
 
 ```bash
-echo "This is a temporary practice file" > exercises/temporary.txt
-cat exercises/temporary.txt
-rm -i exercises/temporary.txt
-```
-
-At the prompt, verify it names `exercises/temporary.txt`, then type `y` and press Enter. Now check:
-
-```bash
-ls exercises
-cat notes/lesson.txt
-```
-
-Expected: `temporary.txt` is absent; `file-management-practice.txt` remains; the notes file still reads `Learning Linux file management`.
-
-![Safe deletion](../images/05-safe-deletion.svg)
-
-`rm` removes files without an interactive confirmation by default. `rmdir` removes **empty** directories. `rm -r` recursively removes a directory tree and can be destructive; `rm -ri` adds prompts but still requires care. Do not run recursive removal on shared, system, or production paths. Always inspect with `pwd`, `ls`, or `find` before deleting.
-
-**Checkpoint 6:** Confirm only the intended temporary file disappeared. Explain why `rm -i` is safer for this exercise than plain `rm`.
-
-## Step 7 — Independent application configuration mini-project
-
-You are preparing a tiny application workspace. The application needs one source configuration file, a backup copy, and a deployment copy under a different filename. This models a basic operations habit: preserve a known-good configuration before deployment. It is **not** a full deployment system or a secure secrets-management workflow.
-
-First, enter the project folder:
-
-```bash
-cd ~/devops-training/01-linux/day-002/project
 pwd
 ```
 
-Now complete the project yourself before looking at the example solution in [the project guide](../project/README.md). The required result is:
+Expected path ends in `/01-linux/day-002`.
+
+**Move the copied file into `exercises`:**
+
+```bash
+mv -i labs/lesson.txt exercises/
+```
+
+`mv` means move. `-i` requests confirmation **when an overwrite would occur**; it does not necessarily prompt when the destination is new. That is normal.
+
+**Verify that the destination contains the file:**
+
+```bash
+ls exercises
+```
+
+Expected: `lesson.txt` is present.
+
+**Verify that the old directory no longer contains it:**
+
+```bash
+ls labs
+```
+
+Expected: no `lesson.txt` entry (the directory may otherwise be empty).
+
+**Rename the moved file:**
+
+```bash
+mv -i exercises/lesson.txt exercises/file-management-practice.txt
+```
+
+Because the source and destination are in the same directory, this is a rename.
+
+**Read the renamed file:**
+
+```bash
+cat exercises/file-management-practice.txt
+```
+
+Expected:
+
+```text
+Learning Linux file management
+```
+
+**Check that the original still exists:**
+
+```bash
+cat notes/lesson.txt
+```
+
+Expected:
+
+```text
+Learning Linux file management
+```
+
+### `cp` versus `mv`: the key distinction
+
+| Command | Result |
+|---|---|
+| `cp source destination` | Creates a copy; source remains |
+| `mv source destination` | Moves or renames the source; original path no longer refers to it |
+
+Moving a file across different filesystems can require a copy-and-delete operation internally, rather than a simple rename. In either case, verify the final result.
+
+### Verification checkpoint 5
+
+You should now have:
+- `notes/lesson.txt` — original preserved.
+- `exercises/file-management-practice.txt` — moved and renamed copy.
+- No `labs/lesson.txt`.
+
+If you cannot explain why `labs/lesson.txt` disappeared while `notes/lesson.txt` remained, repeat the comparison before proceeding.
+
+---
+
+## Step 6 of 7 — Safe deletion and why `rm -i` matters
+
+Deleting files is one of the most dangerous routine operations in Linux because removal is not normally sent to a desktop recycle bin. We will delete **only a temporary practice file that we create ourselves**.
+
+**Create a temporary file:**
+
+```bash
+echo "This is a temporary practice file" > exercises/temporary.txt
+```
+
+**Verify its contents:**
+
+```bash
+cat exercises/temporary.txt
+```
+
+Expected:
+
+```text
+This is a temporary practice file
+```
+
+**Remove it interactively:**
+
+```bash
+rm -i exercises/temporary.txt
+```
+
+When prompted, confirm with `y` **only after checking the path**. The exact prompt wording can vary.
+
+**Verify the directory:**
+
+```bash
+ls exercises
+```
+
+Expected: `file-management-practice.txt` remains, while `temporary.txt` is gone.
+
+**Verify the original lesson file is still safe:**
+
+```bash
+cat notes/lesson.txt
+```
+
+Expected:
+
+```text
+Learning Linux file management
+```
+
+### Understanding the deletion commands
+
+- `rm file` removes a file without the interactive confirmation you requested here.
+- `rm -i file` asks for confirmation before removal.
+- `rmdir folder` removes an **empty** directory.
+- `rm -r folder` recursively removes a directory and its contents; this is **dangerous** if the path is wrong.
+- `rm -ri folder` requests interactive confirmation during recursive removal, but it is not a guarantee against mistakes.
+
+Never experiment with recursive deletion on production paths. For this course, you do **not** need to run `rm -r` or `rm -ri`.
+
+### Verification checkpoint 6
+
+Prove that `temporary.txt` is absent and that the original and renamed exercise file remain. A safe deletion is not just “the file disappeared”; it is “the **intended** file disappeared and everything else stayed.”
+
+![Safe deletion](../images/05-safe-deletion.svg)
+
+---
+
+## Step 7 of 7 — Independent project: application configuration, backup, and deployment copy
+
+Now it's time to work independently. Imagine you are preparing a small application for deployment. You need to organize its configuration, preserve a backup, and prepare a deployment-specific copy.
+
+**Your starting point:**
+
+```text
+~/devops-training/01-linux/day-002
+```
+
+**Your project destination:**
+
+```text
+day-002/project/application/
+```
+
+**Target structure:**
 
 ```text
 application/
@@ -212,15 +518,27 @@ application/
     └── production.conf
 ```
 
-All three files must contain exactly:
+**All three files must contain exactly:**
 
 ```text
 APP_NAME=DevOpsTraining
 ```
 
-![Project structure](../images/06-project-layout.svg)
+This is the exact configuration string for this Day 002 classroom exercise. The course and images are branded **VERIQTA DevOps Training**, but the lab's expected file contents are intentionally preserved.
 
-Verify the tree and all three files with:
+### Your independent requirements
+
+1. Create the `backup`, `config`, and `deployment` directories inside `project/application`.
+2. Create `config/app.conf` with the required configuration line.
+3. Copy it to `backup/app.conf` without removing the original.
+4. Create the deployment copy at `deployment/production.conf`.
+5. Verify the directory tree and read all three files.
+
+**Do the project before opening the solution section below.** Your goal is to choose the right commands yourself, not copy a recipe without understanding it.
+
+### Project verification commands
+
+From inside `day-002/project`, run:
 
 ```bash
 tree application
@@ -229,12 +547,50 @@ cat application/backup/app.conf
 cat application/deployment/production.conf
 ```
 
-**Checkpoint 7:** Confirm there are four directories (including `application`) and three files, and that all three `cat` commands print the same line. Do not place real passwords, API keys, or credentials in these example files.
+**Expected:** `tree` shows four directories including `application` and three files. Each `cat` prints exactly `APP_NAME=DevOpsTraining`.
 
-## Engineer's reasoning: why these habits matter
+### Guided solution — open only after attempting the project
 
-A command succeeding is not the same as a task being correct. In operations work, verify **where** you are (`pwd`), **what** exists (`ls`, `tree`), **what** a file contains (`cat`), and **what changed** after an operation. Before modifying a configuration, preserve the source and check the destination. On a real system, teams also use version control, reviews, access controls, backups, and tested rollback procedures; these come later in your training.
+```bash
+cd ~/devops-training/01-linux/day-002/project
+mkdir -p application/{backup,config,deployment}
+echo "APP_NAME=DevOpsTraining" > application/config/app.conf
+cp application/config/app.conf application/backup/
+cp application/config/app.conf application/deployment/production.conf
+tree application
+cat application/config/app.conf
+cat application/backup/app.conf
+cat application/deployment/production.conf
+```
 
-## Continue
+**Why these commands work:**
+- `mkdir -p` plus brace expansion creates the three required folders.
+- `echo ... >` writes the configuration to the original.
+- `cp ... application/backup/` preserves the basename `app.conf`.
+- `cp ... application/deployment/production.conf` writes a copy under a different filename.
+- `tree` checks structure; the three `cat` commands check content.
 
-Complete [guided lab](../labs/follow-along-lab.md), [extra exercises](../exercises/exercises.md), [independent project](../project/README.md), [practical assessment](../assessments/practical-assessment.md), and [knowledge check](../assessments/knowledge-check.md). Work through errors with [troubleshooting](../troubleshooting/README.md).
+A copy of the sample configuration files is included under [`../project/application/`](../project/application/) for reference. The actual assessment requires you to create them on your own Linux server.
+
+### Project assessment
+
+See [Practical Assessment for Students](../assessments/practical-assessment.md) for the 100-point rubric. After completing the practical assessment, answer the three [Knowledge Check](../assessments/knowledge-check.md) questions.
+
+![Application project structure](../images/06-project-layout.svg)
+
+---
+
+## What you should understand before moving to Day 003
+
+You should be able to answer all of these **without guessing**:
+
+- Am I using an absolute or relative path?
+- Which directory am I in, and how can I prove it?
+- Does my command create a copy, move a file, or rename it?
+- Could this command overwrite an existing file?
+- What will remain after I remove this temporary file?
+- How do I prove a project has the correct structure **and** contents?
+
+These are the habits of reliable DevOps engineering: **inspect, act deliberately, verify, and preserve what matters.**
+
+**Next lesson:** Linux file permissions, ownership, and executable scripts.

@@ -1,29 +1,30 @@
-# Guided Follow-Along Lab — Day 002
+# Day 002 — Complete Follow-Along Lab
+Read [Complete Instructor Notes](../notes/complete-lesson.md) alongside this lab. Every stage follows the same order as the class. **Run commands one at a time, stop at each checkpoint, and do not advance until the output makes sense.**
 
-**Goal:** Perform the same seven stages taught in the [complete lesson](../notes/complete-lesson.md). Type commands yourself; do not skip verification. Use your own sandbox.
+## Stage 1 — Navigate using paths
 
-## Lab setup
+**Goal:** Distinguish relative paths, parent directories, and previous directories.
 
 ```bash
-mkdir -p ~/devops-training/01-linux
 cd ~/devops-training
 pwd
-```
-
-Expected: a path ending `/devops-training`.
-
-## Stage 1: Navigate
-
-```bash
 cd 01-linux
 pwd
 cd ..
 pwd
+cd -
+pwd
 ```
 
-**Verify:** The first path ends `/01-linux`; the second ends `/devops-training`. Explain the role of `..`.
+**Expected location sequence:**
+1. `/home/ubuntu/devops-training`
+2. `/home/ubuntu/devops-training/01-linux`
+3. `/home/ubuntu/devops-training`
+4. `/home/ubuntu/devops-training/01-linux`
 
-## Stage 2: List and inspect
+**Verify:** Explain `cd ..` versus `cd -`. Your home directory may not be `/home/ubuntu` if you use a different account.
+
+## Stage 2 — Compare directory listings
 
 ```bash
 ls
@@ -31,9 +32,11 @@ ls -l
 ls -a
 ```
 
-**Verify:** You can find `01-linux` and see `.` and `..` in `ls -a`. Identify owner and permissions in the long listing.
+**Expected:** `ls -l` adds metadata; `ls -a` includes `.` and `..`.
 
-## Stage 3: Build the directory layout
+**Verify:** Identify a directory entry, its owner, its group, and the leading `d` in a long listing.
+
+## Stage 3 — Create five Day 002 folders
 
 ```bash
 cd ~/devops-training/01-linux
@@ -41,12 +44,25 @@ mkdir -p day-002/{notes,labs,exercises,project,troubleshooting}
 tree day-002
 ```
 
-**Verify:** The output contains `notes`, `labs`, `exercises`, `project`, `troubleshooting`; six directories including the parent, zero files. If `tree` is unavailable, use `find day-002 -type d | sort`.
+**Expected on a fresh run:**
 
-## Stage 4: Copy a file
+```text
+day-002
+├── exercises
+├── labs
+├── notes
+├── project
+└── troubleshooting
+
+6 directories, 0 files
+```
+
+**Verify:** Five named subdirectories; `project` is singular. On a repeat run, additional files may appear.
+
+## Stage 4 — Create and copy a file
 
 ```bash
-cd day-002
+cd ~/devops-training/01-linux/day-002
 echo "Learning Linux file management" > notes/lesson.txt
 cat notes/lesson.txt
 cp notes/lesson.txt labs/
@@ -55,9 +71,11 @@ ls notes
 ls labs
 ```
 
-**Verify:** Both directories contain `lesson.txt`; both files show the same line.
+**Expected:** Both `cat` commands print `Learning Linux file management`. Both directories contain `lesson.txt`.
 
-## Stage 5: Move and rename
+**Verify:** Copying does **not** remove the source.
+
+## Stage 5 — Move and rename the copy
 
 ```bash
 mv -i labs/lesson.txt exercises/
@@ -68,9 +86,11 @@ cat exercises/file-management-practice.txt
 cat notes/lesson.txt
 ```
 
-**Verify:** `labs/lesson.txt` is gone, `exercises/file-management-practice.txt` exists, and `notes/lesson.txt` remains unchanged.
+**Expected:** `labs/lesson.txt` is gone; `exercises/file-management-practice.txt` exists; `notes/lesson.txt` still exists. Both `cat` commands print the original sentence.
 
-## Stage 6: Interactive deletion
+**Verify:** `mv -i` may not prompt if the destination does not exist; it prompts when an overwrite would otherwise occur.
+
+## Stage 6 — Delete only a temporary file
 
 ```bash
 echo "This is a temporary practice file" > exercises/temporary.txt
@@ -78,17 +98,49 @@ cat exercises/temporary.txt
 rm -i exercises/temporary.txt
 ```
 
-Confirm with `y` **only** when the prompt identifies the correct temporary file.
+At the prompt, confirm with `y` **after checking the path**.
 
 ```bash
 ls exercises
 cat notes/lesson.txt
 ```
 
-**Verify:** The temporary file is gone, the renamed practice file remains, and the notes file is intact.
+**Expected:** `temporary.txt` is absent, `file-management-practice.txt` remains, and the original lesson text is unchanged.
 
-## Stage 7: Independent mini-project
+**Verify:** You removed the intended temporary file, not the lesson file.
 
-Follow [the project instructions](../project/README.md). Before consulting the worked example, build `application/config`, `application/backup`, and `application/deployment`, and ensure each required `.conf` file contains `APP_NAME=DevOpsTraining`.
+## Stage 7 — Independent project
 
-**Verify:** Run `tree application` and the three `cat` commands from the project guide. Record what you observed in your own notes, then complete the [practical assessment](../assessments/practical-assessment.md).
+**Stop here and attempt the [project brief](../project/README.md) before viewing the solution.**
+
+Your target is:
+
+```text
+application/
+├── backup/app.conf
+├── config/app.conf
+└── deployment/production.conf
+```
+
+Each file must contain:
+
+```text
+APP_NAME=DevOpsTraining
+```
+
+**Verification commands** (from `day-002/project`):
+
+```bash
+tree application
+cat application/config/app.conf
+cat application/backup/app.conf
+cat application/deployment/production.conf
+```
+
+**Expected:** Four directories including the top-level `application`, three files, and the required line displayed three times.
+
+## Final learning checkpoint
+
+Explain, in your own words, the purpose of `pwd`, `cd ..`, `cd -`, `ls -l`, `ls -a`, `mkdir -p`, `cp`, `mv -i`, `rm -i`, `tree`, and `cat`.
+
+Then complete the [Practical Assessment for Students](../assessments/practical-assessment.md) and [Knowledge Check](../assessments/knowledge-check.md).

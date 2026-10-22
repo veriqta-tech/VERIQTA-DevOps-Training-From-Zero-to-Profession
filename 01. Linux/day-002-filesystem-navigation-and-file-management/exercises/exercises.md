@@ -1,33 +1,87 @@
 # Day 002 — Practice Exercises
 
-Complete these in your training sandbox after the guided lab. Try each task **before** reading the hint. Verify every result using `pwd`, `ls`, `tree`, or `cat`.
+Complete these **after the guided lab** and before the independent project if you need more practice. Work only inside `~/devops-training/01-linux/day-002`.
 
-## Exercise 1: Navigate without guessing
+## Exercise 1 — Explain your path
 
-From `~/devops-training`, enter `01-linux/day-002` using a relative path. Move up one directory, then return to the previous directory. **Check:** Use `pwd` after each move. **Hint:** `cd 01-linux/day-002`, `cd ..`, `cd -`.
+```bash
+cd ~/devops-training
+pwd
+cd 01-linux
+pwd
+cd ..
+pwd
+cd -
+pwd
+```
 
-## Exercise 2: Compare listings
+**Your task:** Identify which path is absolute, which directory name is relative, and how `cd -` differs from `cd ..`.
 
-From `~/devops-training`, run `ls`, `ls -l`, and `ls -a`. Identify which command displays hidden names, which shows ownership, and which shows only non-hidden names. **Check:** Describe what `.` and `..` represent.
+**Verify:** You end in `01-linux` and can explain every transition.
 
-## Exercise 3: Build a practice workspace
+## Exercise 2 — Inspect hidden entries
 
-Inside `day-002/exercises`, create `review/{input,output,archive}` using one `mkdir -p` command. **Check:** `tree review` should show four directories including `review`, zero files. **Hint:** Brace expansion.
+```bash
+ls
+ls -l
+ls -a
+```
 
-## Exercise 4: Copy and compare
+**Your task:** Explain the difference among the three listings and identify `.` and `..`.
 
-Create `review/input/message.txt` containing `Practice builds confidence`. Copy it to `review/archive/`. **Check:** `cat` both files and verify that both still exist. **Hint:** `echo`, `>`, `cp`, `cat`.
+**Verify:** You can recognize a directory from the leading `d` in a long listing.
 
-## Exercise 5: Move and rename
+## Exercise 3 — Create nested practice folders
 
-Move the archived copy into `review/output/`, then rename it `final-message.txt` using `mv -i`. **Check:** The input copy remains; the output copy has the new name; archive no longer contains the file.
+```bash
+cd ~/devops-training/01-linux/day-002
+mkdir -p exercises/review/{input,output}
+tree exercises/review
+```
 
-## Exercise 6: Delete only what you created
+**Your task:** Explain how Bash brace expansion and `mkdir -p` work together.
 
-Create `review/output/remove-me.txt` with a short message. Display it, remove it using `rm -i`, and verify `final-message.txt` remains. **Check:** Confirm the prompt names the correct file before entering `y`.
+**Verify:** `input` and `output` both exist beneath `review`.
 
-## Reflection
+## Exercise 4 — Copy and verify
 
-Answer in your own words: (1) When would you choose `cp` instead of `mv`? (2) What does `mkdir -p` change? (3) Why should you run `pwd` before a destructive command? (4) What does `ls -a` reveal that `ls` normally hides?
+```bash
+echo "Practice copying files" > exercises/review/input/example.txt
+cp exercises/review/input/example.txt exercises/review/output/
+cat exercises/review/input/example.txt
+cat exercises/review/output/example.txt
+```
 
-**Optional cleanup:** Keep your work as a learning record. If you choose to remove practice files later, inspect the exact paths first; do not copy arbitrary recursive deletion commands from the internet.
+**Verify:** Both files contain `Practice copying files`.
+
+## Exercise 5 — Move and rename
+
+```bash
+mv -i exercises/review/output/example.txt exercises/review/output/renamed.txt
+ls exercises/review/output
+cat exercises/review/output/renamed.txt
+```
+
+**Verify:** The old name is absent from `output`, the new name exists, and the source under `input` remains.
+
+## Exercise 6 — Safe temporary-file deletion
+
+```bash
+echo "Temporary" > exercises/review/output/delete-me.txt
+cat exercises/review/output/delete-me.txt
+rm -i exercises/review/output/delete-me.txt
+ls exercises/review/output
+```
+
+Confirm only the intended temporary file. **Verify:** `delete-me.txt` is absent while `renamed.txt` remains.
+
+## Exercise 7 — Explain your decisions
+
+Without copying a solution, answer:
+- When should you use `cp` rather than `mv`?
+- Why do we inspect a file with `cat` after copying it?
+- What can `>` overwrite?
+- Why is `rm -i` safer than plain `rm`, and what risk remains?
+- What would you check if `tree` showed the project in the wrong location?
+
+When ready, attempt the [independent project](../project/README.md) and [student assessment](../assessments/practical-assessment.md).

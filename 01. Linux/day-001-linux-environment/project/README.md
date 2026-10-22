@@ -1,12 +1,12 @@
-# Day 001 — Mini-Project: Build Your First Linux Operations Workspace
+# Day 001 — Guided Project: Prepare a Linux Training Workspace
 
 ## Scenario
 
-You are preparing a dedicated folder on an Ubuntu server for the first week of VERIQTA DevOps Training. Your goal is to organize notes and a practice report, then prove that the files contain the correct information.
+You have just received access to an Ubuntu server. Before working on larger projects, you need to establish a clean module directory and prepare two files: a lesson note and a practical report. A teammate should be able to find and read both without asking you where you saved them.
 
-## Follow along
+**This is a guided project.** For the independent assessment, see [Practical Assessment for Students](../assessments/practical-assessment.md).
 
-**1. Create the workspace:**
+### Project Step 1 — Create and enter the workspace
 
 ```bash
 mkdir -p ~/devops-training/01-linux/notes
@@ -15,9 +15,11 @@ cd ~/devops-training/01-linux
 pwd
 ```
 
-**Verify:** Your path ends in `/devops-training/01-linux`.
+**Why:** `mkdir -p` prepares nested directories without requiring you to create each parent separately. `cd` changes your current working directory. `pwd` proves your location.
 
-**2. Write a lesson note:**
+**Checkpoint:** Your path ends in `/devops-training/01-linux`.
+
+### Project Step 2 — Prepare the note
 
 ```bash
 touch notes/day-001.md
@@ -25,9 +27,11 @@ echo "My first DevOps Linux lesson" > notes/day-001.md
 cat notes/day-001.md
 ```
 
-**Verify:** The sentence prints exactly.
+**Expected output:** `My first DevOps Linux lesson`
 
-**3. Prepare a practice report:**
+**Why:** Creating the file and verifying its contents are separate actions. `touch` is not the same as writing text.
+
+### Project Step 3 — Prepare and rename the report
 
 ```bash
 touch practice/day-001.md
@@ -36,25 +40,32 @@ echo "Linux Day 1 practical assessment completed." > practice/day-001-report.txt
 cat practice/day-001-report.txt
 ```
 
-**Verify:** The final sentence includes the word **practical** (not *practice*). `mv` renamed the file; it did not create a second copy.
+**Expected output:** `Linux Day 1 practical assessment completed.`
 
-**4. Inspect the result:**
+**Why:** `mv` changes the filename here. `>` writes the report content and overwrites any previous content at that path. Check the path carefully.
+
+### Project Step 4 — Verify the full deliverable
 
 ```bash
 tree ~/devops-training/01-linux
+cat ~/devops-training/01-linux/notes/day-001.md
+cat ~/devops-training/01-linux/practice/day-001-report.txt
 ```
 
-Expected relevant structure (additional exercise files are fine):
+**Expected relevant structure:**
 
 ```text
-devops-training/
-└── 01-linux/
-    ├── notes/
-    │   └── day-001.md
-    └── practice/
-        └── day-001-report.txt
+01-linux/
+├── notes/
+│   └── day-001.md
+└── practice/
+    └── day-001-report.txt
 ```
 
-## Engineering lesson
+Extra exercise files are fine.
 
-A successful command is not enough: verify **where** a file was created, **what** it contains, and **whether** it has the required name. Automated deployment tools rely on exact paths and text. After completing this guided project, try the [independent practical assessment](../assessments/practical-assessment.md) without following these commands.
+**Acceptance criteria:** Both paths exist; the note and report contain the exact required sentences; you can explain each command; you did not modify unrelated system directories.
+
+### Engineering reflection
+
+What would happen if you wrote the report in the wrong directory? What would happen if you accidentally used `>` on an existing configuration file? Which commands would prove the result rather than merely assuming success?

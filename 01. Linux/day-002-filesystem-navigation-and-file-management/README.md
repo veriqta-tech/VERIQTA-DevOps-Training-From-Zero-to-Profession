@@ -1,52 +1,34 @@
 # VERIQTA DevOps Training — From Zero to Professional
+## Module 01 · Linux · Day 002: Filesystem Navigation and File Management
 
-## Linux Day 002: Filesystem Navigation and File Management
+Welcome back. In Day 001 you connected to Linux, explored the operating system, and created a training workspace. Today you will **navigate that workspace confidently and manage files safely**. This is a full follow-along class, not a summary of someone else's experience.
 
-**Module:** 01 — Linux Fundamentals  
-**Level:** Beginner  
-**Learning format:** Explain → demonstrate → execute → verify → practice → assess  
-**Recommended time:** 60–90 minutes; take longer when needed.
+**Teaching rhythm:** I explain → you run → you inspect → you verify → you understand → you continue. Read each section before running its commands. Stop at every checkpoint.
 
-Welcome back. Today you will navigate Linux directories, inspect files, create organized workspaces, copy and move files, and remove temporary files safely. You will finish by preparing a small application configuration directory as an independent practical project.
+### What you will learn
+1. Absolute and relative paths, `cd`, `pwd`, `/`, `~`, `.`, `..`, and `cd -`.
+2. Directory listings with `ls`, `ls -l`, and `ls -a`.
+3. Nested directories with `mkdir -p` and Bash brace expansion.
+4. Creating and copying a file with `echo`, `cat`, and `cp`.
+5. Moving and renaming files safely with `mv -i`.
+6. Removing a temporary file with `rm -i` and understanding deletion risks.
+7. Building an application configuration, backup, and deployment layout independently.
 
-**Prerequisites:** Day 001; a Linux terminal; the `~/devops-training/01-linux` workspace. Commands use an Ubuntu account named `ubuntu`, but work on most Linux environments. Your home directory may be different. Use a **personal practice machine or sandbox**, not a production server.
+### Start here
+- [Complete instructor notes — seven fully explained stages](notes/complete-lesson.md)
+- [Follow-along lab — exact command sequence and checkpoints](labs/follow-along-lab.md)
+- [Practice exercises](exercises/exercises.md)
+- [Independent project guide](project/README.md)
+- [Practical Assessment for Students](assessments/practical-assessment.md)
+- [Knowledge Check — the three classroom questions](assessments/knowledge-check.md)
+- [Troubleshooting and safe recovery](troubleshooting/README.md)
 
-### Learning path
+**Lab environment:** Ubuntu Linux, ordinary user `ubuntu` in examples, terminal or SSH. Other Linux accounts and hostnames are fine. If your Day 001 workspace is in a different location, adapt paths carefully.
 
-1. [Complete teaching lesson](notes/complete-lesson.md) — every concept, command, expected output, and checkpoint.
-2. [Guided follow-along lab](labs/follow-along-lab.md) — reproduce the seven practical stages.
-3. [Exercises](exercises/exercises.md) — reinforce your skills with additional challenges.
-4. [Independent mini-project](project/README.md) — create and verify application configuration, backup, and deployment copies.
-5. [Practical assessment](assessments/practical-assessment.md) — demonstrate the skills yourself using a 100-point rubric.
-6. [Knowledge check](assessments/knowledge-check.md) — test understanding, then review the answer explanations.
-7. [Troubleshooting](troubleshooting/README.md) — investigate and correct common mistakes.
+**Starting location:** `~/devops-training/01-linux`. The workspace is named `day-002`, with a **singular** `project` directory.
 
-### What you will be able to do
+**Important:** The notes and labs contain the same learning path, intentionally. The notes explain *why and how*; the lab gives you a focused, executable companion. Do not blindly paste a whole lesson into your terminal.
 
-- Distinguish absolute and relative paths and navigate with `cd`, `pwd`, `~`, `.`, `..`, and `cd -`.
-- Inspect directories with `ls`, `ls -l`, and `ls -a`, and interpret basic listing metadata.
-- Create nested directories with `mkdir -p` and Bash brace expansion.
-- Write and inspect a file using `echo`, `>`, and `cat`.
-- Copy with `cp`, move and rename with `mv -i`, and delete a specific temporary file with `rm -i`.
-- Verify the expected file structure and contents before declaring work complete.
+**Safety:** Use these commands only in your training workspace. Never test destructive commands against system directories or other people's files. `>` overwrites files, and `rm` normally has no undo.
 
-### Visual guide
-
-![Path navigation](images/01-path-navigation.svg)
-![Directory listing](images/02-ls-comparison.svg)
-![Nested folders](images/03-directory-layout.svg)
-![Copy and move](images/04-copy-versus-move.svg)
-![Safe deletion](images/05-safe-deletion.svg)
-![Mini-project layout](images/06-project-layout.svg)
-
-### Completion checklist
-
-- [ ] Completed each of the seven practical stages and checked its expected output.
-- [ ] Explained why `cp` preserves a source file but `mv` relocates or renames it.
-- [ ] Practiced interactive deletion without deleting unrelated files.
-- [ ] Built and verified the three application configuration files.
-- [ ] Completed the practical assessment and knowledge check.
-
-**Next:** Linux Day 003, after you can reproduce these operations confidently.
-
-**Brand:** VERIQTA DevOps Training. Copyright and licensing are maintained at repository root; this lesson does not duplicate those files.
+**Brand:** VERIQTA DevOps Training. The repository's single root copyright file applies; there is no daily copyright file.

@@ -1,52 +1,54 @@
-# Knowledge Check — Linux Day 003
-Choose one answer per question before opening the answer key. These questions test the same concepts used in the labs.
+# Day 003 — Knowledge Check
+## The same three questions from the class
 
-**1.** You want owner read/write, group read-only, and others no permissions on `production.conf`. Which command sets the exact mode?
-- A. `chmod 777 production.conf`
-- B. `chmod 644 production.conf`
-- C. `chmod 640 production.conf`
-- D. `chmod 755 production.conf`
+Answer **one question at a time**. Record your choice before moving to the next question. Only open the [answer key](knowledge-check-answers.md) after all three.
 
-**2.** You want to add execute permission **only for the owner** of `deploy.sh` without changing other existing permissions. Which command is correct?
-- A. `chmod 777 deploy.sh`
-- B. `chmod u+x deploy.sh`
-- C. `chmod g+x deploy.sh`
-- D. `chown ubuntu deploy.sh`
+### Question 1 of 3 — Protect a configuration file
 
-**3.** Which command displays username owner, group name, and numeric permissions in a formatted line?
-- A. `whoami production.conf`
-- B. `chmod 640 production.conf`
-- C. `cat production.conf`
-- D. `stat -c 'Owner: %U | Group: %G | Permissions: %a' production.conf`
+You need to give the **owner read and write**, the **group read only**, and **others no permissions** on `production.conf`.
 
-**4.** What does `x` mean on a directory?
-- A. Execute directory as a script
-- B. Traverse/search the directory
-- C. Automatically delete its contents
-- D. Encrypt its contents
+Which command sets exactly those permissions?
 
-**5.** What does the first `d` in `drwxr-xr-x` indicate?
-- A. Deleted file
-- B. Directory
-- C. Device owner
-- D. Default mode
+A. `chmod 777 production.conf`
 
-**6.** What does `chgrp` change?
-- A. Group ownership
-- B. File contents
-- C. File name
-- D. Current shell
+B. `chmod 644 production.conf`
 
-**7.** Which statement is correct about `bash hello.sh` and `./hello.sh`?
-- A. Both always require file execute permission
-- B. `bash hello.sh` asks Bash to read the script, while `./hello.sh` directly executes it and normally requires the execute bit
-- C. `./hello.sh` deletes the file
-- D. Neither uses an interpreter
+C. `chmod 640 production.conf`
 
-**8.** What is the safest first action before running an unfamiliar deployment script?
-- A. Set `chmod 777`
-- B. Run it with `sudo`
-- C. Inspect its contents and source
-- D. Disable permission checks
+D. `chmod 755 production.conf`
 
-**Answer key:** [Open after answering](knowledge-check-answers.md).
+**Your answer:** ______
+
+### Question 2 of 3 — Make a script executable for the owner
+
+You need to **add execute permission only for the owner** of `deploy.sh`, without changing the file's other existing permissions.
+
+Which command should you use?
+
+A. `chmod 777 deploy.sh`
+
+B. `chmod u+x deploy.sh`
+
+C. `chmod g+x deploy.sh`
+
+D. `chown ubuntu deploy.sh`
+
+**Your answer:** ______
+
+### Question 3 of 3 — Verify owner, group, and permissions
+
+Which command displays the owning username, owning group name, and numeric permissions in a formatted line for `production.conf`?
+
+A. `whoami production.conf`
+
+B. `chmod 640 production.conf`
+
+C. `cat production.conf`
+
+D. `stat -c 'Owner: %U | Group: %G | Permissions: %a' production.conf`
+
+**Your answer:** ______
+
+### How to finish
+
+Score **one point per correct answer** (3 total). Explain *why* the correct answer works, and why the other commands do not meet the requirement. If you miss a question, repeat the related lab and verification checkpoint before advancing.

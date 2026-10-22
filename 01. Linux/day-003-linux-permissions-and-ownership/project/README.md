@@ -1,9 +1,20 @@
-# Independent Project — Secure a Small Deployment Workspace
+# Day 003 — Independent Project: Secure the VERIQTA Application
 
 ## Scenario
-You are preparing a small application workspace for VERIQTA DevOps Training. Create a configuration file with controlled access and a deployment script that the owner can execute. This is a simulation: do not deploy a real application or store real secrets.
 
-## Required structure
+You are preparing a small application for a deployment. The configuration must not be readable by everyone on the server, and the deployment script must be executable by its owner. Your responsibility is to create the correct files **and prove** their content, ownership, and permissions.
+
+This is the same project from the Day 003 class. **Attempt it before opening [the reference solution](reference-solution.md).**
+
+### Starting point
+
+```bash
+cd ~/devops-training/01-linux/day-003
+pwd
+```
+
+### Required complete structure
+
 ```text
 day-003/
 ├── permissions-lab/
@@ -17,22 +28,82 @@ day-003/
             └── deploy.sh
 ```
 
-## Requirements
-1. From `day-003`, create `project/veriqta-app/config` and `project/veriqta-app/scripts`.
-2. Put exactly `APP_NAME=VERIQTA` in `config/production.conf`.
-3. Set configuration mode `640`. Confirm the user owner and group owner; on the standard Ubuntu EC2 lab they are both `ubuntu`.
-4. Create a two-line Bash script with `#!/bin/bash` and an `echo` command that prints exactly `VERIQTA deployment ready`.
-5. Grant owner execute permission to `deploy.sh`, run it from the project path, and verify output.
-6. Show the directory tree and both files' permission and ownership details.
+Keep the guided `permissions-lab` files intact. Your new work belongs under `project/veriqta-app`.
 
-**Think before you type:** Which commands from Days 001–003 will you reuse? Can you accomplish this without `sudo`? How will you prove that permissions are correct?
+## Task 1 — Create directories
 
-## Student verification checklist
-- [ ] `tree project` shows two required files in the right directories.
-- [ ] `cat project/veriqta-app/config/production.conf` prints the exact setting.
-- [ ] `stat -c '%a %U %G' project/veriqta-app/config/production.conf` prints `640` and the intended owner/group.
-- [ ] `cat project/veriqta-app/scripts/deploy.sh` shows a valid Bash shebang and expected echo command.
-- [ ] `ls -l project/veriqta-app/scripts/deploy.sh` shows owner execute permission.
-- [ ] `./project/veriqta-app/scripts/deploy.sh` prints the required message.
+Create `project/veriqta-app/config` and `project/veriqta-app/scripts`.
 
-When finished, submit your terminal output or screenshots to your instructor for marking. For an optional self-study walkthrough, see [reference solution](reference-solution.md) **only after attempting the project**.
+**Think:** Which command creates nested directories without failing if the parents already exist?
+
+**Checkpoint:** Use `tree project` to show both subdirectories.
+
+## Task 2 — Create the configuration
+
+Create `project/veriqta-app/config/production.conf` containing exactly:
+
+```text
+APP_NAME=VERIQTA
+```
+
+**Think:** Which command writes a single line? What does `>` do to an existing file?
+
+**Checkpoint:** Use `cat` to verify the exact contents.
+
+## Task 3 — Set and verify the configuration mode
+
+Set `production.conf` to numeric mode `640`. On the standard Ubuntu EC2 account, its owner and group should be `ubuntu:ubuntu`. If your account is different, adapt to the correct authorized account/group.
+
+**Checkpoint:**
+
+```bash
+stat -c 'Owner: %U | Group: %G | Permissions: %a' project/veriqta-app/config/production.conf
+```
+
+Expected on the standard lab:
+
+```text
+Owner: ubuntu | Group: ubuntu | Permissions: 640
+```
+
+## Task 4 — Write the deployment script
+
+Create `project/veriqta-app/scripts/deploy.sh` with exactly these lines:
+
+```bash
+#!/bin/bash
+echo "VERIQTA deployment ready"
+```
+
+Set the script's numeric mode to `744`: owner read/write/execute; group read; others read.
+
+**Checkpoint:** `cat` proves the contents; `stat` proves the numeric mode.
+
+## Task 5 — Execute and verify
+
+From `day-003`, run:
+
+```bash
+tree project
+cat project/veriqta-app/config/production.conf
+stat -c 'Owner: %U | Group: %G | Permissions: %a' project/veriqta-app/config/production.conf
+cat project/veriqta-app/scripts/deploy.sh
+stat -c 'Owner: %U | Group: %G | Permissions: %a' project/veriqta-app/scripts/deploy.sh
+./project/veriqta-app/scripts/deploy.sh
+```
+
+Expected script output:
+
+```text
+VERIQTA deployment ready
+```
+
+**Acceptance criteria:** Correct structure; exact configuration and script contents; configuration mode `640`; script mode `744`; correct owner/group; successful script execution; guided lab files remain intact.
+
+### If your verification fails
+
+Read the actual error. For example, `ls-l` is not `ls -l`: the space matters. Avoid broad permission changes such as `chmod 777`. Correct the specific file or command and verify again.
+
+### Assessment
+
+Complete the [Practical Assessment for Students](../assessments/practical-assessment.md) independently. It uses five equally weighted criteria (100 points total). Review the [reference solution](reference-solution.md) **only after your attempt**.

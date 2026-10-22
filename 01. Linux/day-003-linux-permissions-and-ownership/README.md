@@ -1,16 +1,31 @@
-# VERIQTA DevOps Training — Linux Day 003
-## Linux File Permissions, Ownership, and Executable Scripts
+# VERIQTA DevOps Training — From Zero to Professional
+## Module 01 · Linux · Day 003: Understanding Linux Files, Permissions, and Ownership
 
-**Course:** From Zero to Professional · **Module:** 01 Linux · **Level:** Beginner · **Platform:** Ubuntu on AWS EC2 or another Ubuntu lab VM
+Welcome back. You have already learned how to navigate directories and manage files. Today you will learn **who is allowed to read, change, or execute those files**. This is a fundamental production-security skill.
 
-Welcome. Today you will identify your Linux account, interpret file and directory permission strings, secure configuration files, inspect ownership, make a Bash script executable, and build a small application deployment workspace. Follow the stages in order. Execute commands yourself, compare expected results, and complete the assessments without looking at the answers first.
+**How to take this class:** Read one teaching stage → run its commands on your own Ubuntu machine → examine the output → complete the verification checkpoint → continue. You do not need to know the answers in advance. The documentation is a complete classroom experience, not a retrospective summary.
 
-**Learning path:** [Full teaching notes](notes/complete-lesson.md) → [Guided labs](labs/follow-along-labs.md) → [Practice exercises](exercises/practice-exercises.md) → [Project](project/README.md) → [Practical assessment](assessments/practical-assessment.md) → [Knowledge check](assessments/knowledge-check.md). See [troubleshooting](troubleshooting/README.md) if a command fails.
+### Seven teaching stages
+1. Identify your Linux account, numeric IDs, and groups.
+2. Inspect permissions and ownership of directories.
+3. Create an application configuration file.
+4. Change permissions using symbolic and numeric `chmod`.
+5. Inspect and assign file ownership and group.
+6. Create, make executable, and run a Bash script.
+7. Complete an independent VERIQTA application project.
 
-**Diagrams:** [Permission anatomy](images/permission-anatomy.svg) · [Numeric modes](images/numeric-permissions.svg) · [Ownership](images/ownership.svg) · [Script workflow](images/script-execution.svg) · [Project layout](images/project-structure.svg) · [Safe verification](images/verification-workflow.svg).
+### Open these files in order
+- [Complete instructor notes — the full seven-stage class](notes/complete-lesson.md)
+- [Follow-along lab — commands, outputs, checkpoints](labs/follow-along-labs.md)
+- [Practice exercises](exercises/practice-exercises.md)
+- [Independent application project](project/README.md)
+- [Practical Assessment for Students](assessments/practical-assessment.md)
+- [Knowledge Check — three classroom questions](assessments/knowledge-check.md)
+- [Separate knowledge-check answer key](assessments/knowledge-check-answers.md)
+- [Troubleshooting and recovery](troubleshooting/README.md)
 
-**Safety:** Use only your own lab directory. Do not recursively change permissions or ownership of system paths. Do not execute untrusted scripts. Do not put real secrets in the sample configuration.
+**Environment:** Ubuntu Linux, with an existing `~/devops-training/01-linux` workspace from Days 001–002. Examples assume the standard Ubuntu EC2 account `ubuntu`. If your username differs, adapt owner/group commands accordingly.
 
-**Workspace:** This course uses `~/devops-training/01-linux/day-003` for continuity with Days 001–002. The course is branded VERIQTA DevOps Training; the existing workspace path need not be renamed.
+**Important safety rule:** Only change permissions or ownership of files inside your practice workspace. Do not run `chmod 777` or change system files to make an error disappear. You will encounter `sudo` once for a deliberate ownership demonstration; understand the command before running it.
 
-**Completion:** You should be able to explain `r`, `w`, `x` on files versus directories, interpret `640` and `744`, use `chmod`, inspect ownership with `stat`, and verify a script executes successfully.
+**Publishing standard:** VERIQTA DevOps Training, written for students around the world. No learner-specific scores, no personal screenshots, and no duplicate copyright file.

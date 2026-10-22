@@ -1,44 +1,77 @@
-# Independent Mini-Project — Application Configuration Workspace
+# Day 002 — Independent Project: Prepare an Application for Deployment
 
 ## Scenario
 
-You are preparing a small application workspace for a deployment exercise. The operations team needs a primary configuration, a backup copy, and a deployment copy with a production-oriented filename. You will build the structure and verify each artifact. **This is a practice simulation, not a production deployment.**
+You are the engineer responsible for preparing a small application configuration before a deployment. You must keep an editable original, a backup copy, and a deployment copy. A teammate must be able to inspect the directory and confirm all three files have the intended content.
+
+**Do not copy the solution until you've attempted the project.** Use what you learned in Steps 1–6.
 
 ## Requirements
 
-Work inside `~/devops-training/01-linux/day-002/project`. Create:
+Work inside:
+
+```text
+~/devops-training/01-linux/day-002/project
+```
+
+Create:
 
 ```text
 application/
-├── backup/app.conf
-├── config/app.conf
-└── deployment/production.conf
+├── backup/
+│   └── app.conf
+├── config/
+│   └── app.conf
+└── deployment/
+    └── production.conf
 ```
 
-All three files must contain this one line:
+All three files must contain exactly:
 
 ```text
 APP_NAME=DevOpsTraining
 ```
 
-**Your task:** Create the three directories, write the original configuration, copy it to backup, and create the deployment copy with its required name. Avoid changing or deleting the original.
+This is the configuration text for this Day 002 lab; it is not a company-name change. The course's public brand remains VERIQTA DevOps Training.
 
-## Verification (run before reading the solution)
+### Task 1 — Directories
+
+Create `application/backup`, `application/config`, and `application/deployment`.
+
+**Think:** Which command creates several nested directories in one operation? How will you confirm the result?
+
+### Task 2 — Original configuration
+
+Create `application/config/app.conf` containing the exact required line.
+
+**Think:** Which command writes a short line? What does `>` do if the file already exists?
+
+### Task 3 — Backup
+
+Copy the original into `application/backup/`, keeping the name `app.conf`.
+
+**Think:** Why is `cp` appropriate here and `mv` inappropriate?
+
+### Task 4 — Deployment copy
+
+Copy the original to `application/deployment/production.conf`.
+
+**Think:** How can `cp` give the destination a different name?
+
+### Task 5 — Verify
+
+Run:
 
 ```bash
-cd ~/devops-training/01-linux/day-002/project
 tree application
 cat application/config/app.conf
 cat application/backup/app.conf
 cat application/deployment/production.conf
 ```
 
-Expected: four directories including `application`, three files, and identical output from all three `cat` commands. Compare the contents exactly, including capitalization. If `tree` is unavailable, use `find application -print | sort`.
+**Acceptance criteria:** The correct three subdirectories exist; all three expected files exist; all three contain exactly `APP_NAME=DevOpsTraining`; the original was not removed.
 
-![Expected directory structure](../images/06-project-layout.svg)
-
-<details>
-<summary>Worked example — open after attempting the project</summary>
+## Instructor walkthrough — review after your attempt
 
 ```bash
 cd ~/devops-training/01-linux/day-002/project
@@ -52,14 +85,10 @@ cat application/backup/app.conf
 cat application/deployment/production.conf
 ```
 
-`mkdir -p` creates the directories. `echo ... >` creates the source file; running it again would overwrite its content. The first `cp` retains the source filename; the second writes to the destination filename `production.conf`. The final commands independently confirm structure and content.
+**Explanation:** The `mkdir -p` command creates the structure. `echo` writes the source configuration. The first `cp` retains the basename because the destination is a directory. The second `cp` names the copied file `production.conf`. The verification commands independently check structure and content.
 
-</details>
+## Production engineering perspective
 
-## Engineering reflection
+This lab teaches the *mechanics* of making copies. A real production backup strategy also needs secure storage, retention, access controls, recovery testing, and possibly off-host copies. You will learn these topics in later modules.
 
-Why is a backup useful before modifying a configuration? What additional safeguards would you need on a real production system? Think about version control, approvals, access restrictions, secret management, deployment testing, and rollback.
-
-## Supplied example files
-
-The three `.conf` files included alongside this guide are **reference examples**. Recreate them yourself in the terminal rather than treating the supplied copies as proof you completed the exercise.
+Proceed to the [Practical Assessment for Students](../assessments/practical-assessment.md).

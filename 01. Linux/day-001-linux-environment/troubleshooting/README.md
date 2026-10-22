@@ -1,54 +1,134 @@
 # Day 001 — Troubleshooting and Recovery
 
-Errors are part of learning Linux. Read the message, identify the command that failed, fix the specific cause, and verify again. Work only in your own training workspace.
+Errors are useful evidence. **Read the error, identify the cause, make the smallest safe correction, and verify again.** Never delete your workspace or run commands with `sudo` simply to hide a mistake.
 
-## `tree: command not found`
+## Problem 1 — `tree: command not found`
 
-**Why:** `tree` may not be installed. **Check:** `command -v tree`. **Fix on Ubuntu:**
+**Meaning:** The shell could not find a `tree` executable in its command search path.
+
+**Investigate:**
+
+```bash
+command -v tree
+```
+
+**Ubuntu fix (if you have permission and network access):**
 
 ```bash
 sudo apt update
 sudo apt install tree
 ```
 
-Then retry `tree ~/devops-training/01-linux`. If installation is not permitted, use `find ~/devops-training/01-linux -maxdepth 3 -print`.
+**Verify:**
 
-## `mkdir: cannot create directory ... File exists`
+```bash
+tree ~/devops-training/01-linux
+```
 
-**Why:** The directory already exists. **Fix:** Check `ls` and use `mkdir -p` for repeatable setup. Do not delete an existing workspace to make the error disappear.
+**Without installing:**
 
-## `cd: ... No such file or directory`
+```bash
+find ~/devops-training/01-linux -maxdepth 3 -print
+```
 
-**Why:** The path is misspelled or not created yet. **Check:** `pwd` and `ls ~`. **Fix:** Create the intended training directory with `mkdir -p ~/devops-training/01-linux` and retry.
+## Problem 2 — `mkdir: ... File exists`
 
-## `touch: cannot touch ... No such file or directory`
+**Meaning:** A directory or file with that name already exists.
 
-**Why:** The parent directory is missing. **Fix:** `mkdir -p ~/devops-training/01-linux/notes`, then retry from the correct directory.
+**Investigate:**
 
-## `Permission denied`
+```bash
+pwd
+ls -ld ~/devops-training/01-linux
+```
 
-**Why:** You might be working in a protected directory or using the wrong account. **Check:** `whoami`, `pwd`, and `ls -ld .`. **Fix:** Return to your home training directory. Do not use `sudo` to bypass permissions for ordinary note creation.
+**Safe recovery:** If the existing path is the intended directory, continue; use `mkdir -p` for repeatable directory creation. Do not delete it.
 
-## Your report says `practice assessment` instead of `practical assessment`
+## Problem 3 — `cd: ... No such file or directory`
 
-**Why:** The words are different, and exact strings matter. **Fix:** Reopen the correct practice report using `cat`, rewrite it with the exact required sentence, and verify again:
+**Meaning:** The target path does not exist or is misspelled.
+
+**Investigate:**
+
+```bash
+pwd
+ls ~
+```
+
+**Recovery:** Confirm the intended path and create missing training directories with `mkdir -p ~/devops-training/01-linux` if appropriate.
+
+## Problem 4 — `touch: cannot touch ... No such file or directory`
+
+**Meaning:** The parent directory is missing.
+
+**Recovery:**
+
+```bash
+mkdir -p ~/devops-training/01-linux/notes
+touch ~/devops-training/01-linux/notes/day-001.md
+```
+
+## Problem 5 — `Permission denied`
+
+**Meaning:** Your current account may lack permission to create or read the target file.
+
+**Investigate:**
+
+```bash
+whoami
+pwd
+ls -ld .
+```
+
+**Recovery:** Return to your home training directory. Avoid modifying protected system folders and do not add `sudo` to every command.
+
+## Problem 6 — Wrong report text
+
+If you wrote `practice assessment` instead of `practical assessment`, the words do not match.
+
+**Inspect first:**
+
+```bash
+cat ~/devops-training/01-linux/practice/day-001-report.txt
+```
+
+**Correct only the known training report:**
 
 ```bash
 echo "Linux Day 1 practical assessment completed." > ~/devops-training/01-linux/practice/day-001-report.txt
 cat ~/devops-training/01-linux/practice/day-001-report.txt
 ```
 
-This is safe only for the assessment report, whose intended contents are known. Remember that `>` overwrites existing contents.
+Remember that `>` overwrites the file.
 
-## `ll: command not found`
+## Problem 7 — `ll: command not found`
 
-`ll` is commonly an interactive-shell alias, not a universal Linux command. Use `ls -la` instead.
+`ll` is an alias in some shells, not a universal command.
 
-## `sudo apt update` cannot reach package servers
+**Use instead:**
 
-Check that the machine has network access and that package repositories are configured. On a cloud instance, review its outbound network access and security policy. Do not blindly change firewall or repository settings on a shared system.
+```bash
+ls -la /
+```
 
-## Final recovery check
+## Problem 8 — `apt` cannot download packages
+
+The server may lack network access, repository access, or required privileges. Do not change firewall rules or cloud networking blindly. You can complete the lesson using `find` instead of `tree`.
+
+## Problem 9 — The command runs but the file is not where you expected
+
+Relative paths are interpreted from your **current working directory**.
+
+**Investigate:**
+
+```bash
+pwd
+ls
+```
+
+Then use an absolute path to inspect the intended file. Before creating another copy, locate the file you already wrote.
+
+## Final recovery checkpoint
 
 ```bash
 whoami
@@ -58,4 +138,4 @@ cat ~/devops-training/01-linux/notes/day-001.md
 cat ~/devops-training/01-linux/practice/day-001-report.txt
 ```
 
-Confirm each output before continuing to Day 002.
+If all outputs match the lesson requirements, you are ready for the practical assessment and knowledge check.
