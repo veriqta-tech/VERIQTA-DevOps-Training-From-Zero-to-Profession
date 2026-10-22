@@ -1,5 +1,13 @@
-# Day 004 — Complete Seven-Stage Classroom Notebook
+# Complete Seven-Stage Classroom Notebook
 
-Follow the stages in order: 01 read logs, 02 navigate files, 03 search, 04 count, 05 sort and group, 06 pipes and redirection, 07 production incident project. Each stage contains command-by-command explanations, expected observations, practice and verification. The core lecture is also in `../notes/complete-lesson.md`. The incident project has its own 7C.1–7C.14 workbook.
+Read each stage in sequence, then complete its corresponding lab. Each stage introduces the purpose of commands, syntax, expected observations, practice and verification. The incident project includes a separate step-by-step workbook covering 7C.1–7C.14.
 
-**Source integrity:** This is a detailed educational reconstruction of the documented Day 004 learning path, not a verbatim record of every historical exchange. Only verified user-observed results and the final five assessment questions are represented as such. Screenshots are not included because the original screenshot files were not available for packaging.
+1. [Stage 01](stage-01.md)
+2. [Stage 02](stage-02.md)
+3. [Stage 03](stage-03.md)
+4. [Stage 04](stage-04.md)
+5. [Stage 05](stage-05.md)
+6. [Stage 06](stage-06.md)
+7. [Stage 07](stage-07.md)
+
+[Complete notebook overview](complete-classroom-notebook.md) · [Guided labs](../labs/complete-follow-along-lab-book.md) · [Incident project](../project/README.md)
